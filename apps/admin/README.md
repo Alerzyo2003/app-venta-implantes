@@ -8,6 +8,8 @@ Panel interno para el personal: catálogo, precios, inventario y bodegas. Constr
 - **Sin `service_role`**: el panel usa solo la clave publicable de Supabase y la sesión del usuario
   (cookies). Cada consulta pasa por RLS y cada operación sensible por funciones de la base que
   vuelven a validar permisos (`private.has_permission`).
+- **Cookies de sesión `HttpOnly`, `SameSite=Lax` y `Secure`** (en producción): JavaScript no puede
+  leer los tokens. La sesión se cierra tras 12 horas sin actividad.
 - **MFA obligatoria para el personal** (TOTP). Mientras la sesión no tenga nivel `aal2`, la base
   rechaza las operaciones del personal y el panel redirige a la verificación en dos pasos.
 - **Validación en tres capas**: formulario (zod) → acción del servidor (sesión, permiso y datos,
@@ -88,6 +90,9 @@ pnpm --filter @repo/admin test:e2e
 ```
 
 Si el navegador de Playwright no está instalado: `pnpm --filter @repo/admin exec playwright install chromium`.
+
+`ADMIN_ALLOW_INSECURE_COOKIES=1` (solo lo fijan las pruebas locales sobre `http://127.0.0.1`)
+permite cookies sin `Secure`; **nunca** debe definirse en un despliegue.
 
 > Las pruebas con el emulador verifican la interfaz, los permisos y las reglas de la base real,
 > pero **no** reemplazan las pruebas contra Supabase Auth y PostgREST reales, pendientes hasta

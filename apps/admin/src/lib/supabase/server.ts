@@ -5,6 +5,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 
 import { supabaseEnv } from '@/lib/env';
+import { sessionCookieOptions } from '@/lib/supabase/cookie-options';
 
 /**
  * Cliente de Supabase con la sesión del usuario (cookies). Todas las consultas pasan por RLS.
@@ -13,6 +14,7 @@ import { supabaseEnv } from '@/lib/env';
 export async function createSupabaseServerClient(): Promise<SupabaseClient> {
   const cookieStore = await cookies();
   return createServerClient(supabaseEnv.url, supabaseEnv.anonKey, {
+    cookieOptions: sessionCookieOptions(),
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookiesToSet) => {

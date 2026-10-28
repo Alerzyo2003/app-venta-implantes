@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { qrImageSrc, normalizeTotpCode } from './auth/mfa';
 import { brandCss } from './brand-css';
 import { isBackendConfigured } from './env';
+import { SESSION_IDLE_SECONDS, sessionCookieOptions } from './supabase/cookie-options';
 import { categoryOptions, toOptions } from './options';
 import { listHref, pageRange, parsePage } from './pagination';
 import { slugify } from './slug';
@@ -83,5 +84,17 @@ describe('brandCss', () => {
     expect(css).toContain('--brand-text-muted:');
     expect(css).toContain('@media (prefers-color-scheme: dark)');
     expect(css).not.toMatch(/<\/?style/i);
+  });
+});
+
+describe('cookies de sesión', () => {
+  it('son HttpOnly, SameSite=Lax y expiran tras 12 h sin actividad', () => {
+    const o = sessionCookieOptions({ NODE_ENV: 'production' });
+    expect(o).toMatchObject({ httpOnly: true, sameSite: 'lax', secure: true, path: '/', maxAge: SESSION_IDLE_SECONDS });
+    expect(SESSION_IDLE_SECONDS).toBe(43_200);
+  });
+  it('solo se permiten sin «Secure» en desarrollo o con la marca explícita de pruebas locales', () => {
+    expect(sessionCookieOptions({ NODE_ENV: 'development' }).secure).toBe(false);
+    expect(sessionCookieOptions({ NODE_ENV: 'production', ADMIN_ALLOW_INSECURE_COOKIES: '1' }).secure).toBe(false);
   });
 });

@@ -32,6 +32,12 @@ test('el personal debe activar la verificación en dos pasos', async ({ page }) 
   await expect(page.getByText('Publicados')).toBeVisible();
   await expect(page.getByText('Variantes agotadas')).toBeVisible();
   await expect(page.getByText('Verificaciones profesionales pendientes')).toBeVisible();
+
+  // Las cookies de sesión no son accesibles para JavaScript.
+  const session = (await page.context().cookies()).filter((c) => c.name.startsWith('sb-'));
+  expect(session.length).toBeGreaterThan(0);
+  expect(session.every((c) => c.httpOnly && c.sameSite === 'Lax')).toBe(true);
+  expect(await page.evaluate(() => document.cookie)).not.toContain('sb-');
 });
 
 test('crear un producto, agregar una variante con precio y publicarlo', async ({ page }) => {

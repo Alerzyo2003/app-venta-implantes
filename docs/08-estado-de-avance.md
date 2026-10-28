@@ -93,7 +93,7 @@ Estados:
 | ROL-01 | En desarrollo | 7 roles y 40 permisos; el panel adapta la navegación (E2E local). Gestión de roles en el panel pendiente. |
 | ROL-02 | Probado (BD) | Operaciones sensibles validadas en la base. |
 | ROL-03 | Probado (BD) | Auditoría de solo inserción; vista en el panel pendiente. |
-| SEG-01 | Terminado | RLS, MFA del personal, cookies del servidor, CSP con nonce y cabeceras de seguridad. |
+| SEG-01 | Terminado | RLS, MFA del personal, cookies de sesión HttpOnly con cierre por inactividad, CSP con nonce y cabeceras de seguridad. |
 | SEG-02 | En desarrollo | Secretos fuera del código y errores sin detalles técnicos. Webhooks y límites propios pendientes. |
 | SEG-03 | Pendiente | Respaldo y restauración (requiere proyecto real). |
 | SEG-04 | Pendiente | Textos legales (D-14). |

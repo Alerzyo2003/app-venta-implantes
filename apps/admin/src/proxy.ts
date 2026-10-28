@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { isPublicPath } from '@/lib/auth/paths';
 import { isBackendConfigured, supabaseEnv } from '@/lib/env';
 import { buildCsp, createNonce } from '@/lib/security/csp';
+import { sessionCookieOptions } from '@/lib/supabase/cookie-options';
 
 /**
  * Se ejecuta antes de cada página: fija la CSP con nonce, refresca la sesión de Supabase
@@ -29,6 +30,7 @@ export async function proxy(request: NextRequest) {
 
   if (isBackendConfigured()) {
     const supabase = createServerClient(supabaseEnv.url, supabaseEnv.anonKey, {
+      cookieOptions: sessionCookieOptions(),
       cookies: {
         getAll: () => request.cookies.getAll(),
         setAll: (cookiesToSet, cacheHeaders) => {

@@ -38,7 +38,7 @@ La integración continua ([`.github/workflows/ci.yml`](../.github/workflows/ci.y
 | 2026-10-28 | App móvil: TypeScript estricto y ESLint | `pnpm --filter @repo/mobile typecheck` · `lint` | Sin errores |
 | 2026-10-28 | App móvil: compilación de producción (Hermes) | `EXPO_OFFLINE=1 pnpm --filter @repo/mobile export:check` | iOS 4,6 MB y Android 4,9 MB generados |
 | 2026-10-28 | App móvil: revisión visual de la versión web (Playwright, 390×844, claro y oscuro, backend inaccesible) | capturas automatizadas | Correcta después de corregir 3 defectos (ver abajo) |
-| 2026-10-28 | Panel: unitarias (rutas seguras, CSP, permisos, navegación, formularios, errores, esquemas, utilidades) | `pnpm --filter @repo/admin test` | **61/61** aprobadas |
+| 2026-10-28 | Panel: unitarias (rutas seguras, CSP, cookies de sesión, permisos, navegación, formularios, errores, esquemas, utilidades) | `pnpm --filter @repo/admin test` | **63/63** aprobadas |
 | 2026-10-28 | Panel: TypeScript, ESLint (0 advertencias) y compilación de producción | `typecheck` · `lint` · `build` | Sin errores; todas las páginas se generan por solicitud |
 | 2026-10-28 | Panel: punta a punta con Playwright contra la base local y el emulador `tools/local-api` | `pnpm --filter @repo/admin test:e2e` | **6/6** aprobadas |
 | 2026-10-28 | Panel: revisión visual (1280 y 390 px, claro y oscuro) | capturas automatizadas | Sin errores de consola ni bloqueos de CSP; sin desplazamiento horizontal en móvil |
@@ -57,7 +57,7 @@ La integración continua ([`.github/workflows/ci.yml`](../.github/workflows/ci.y
   **ingresos/ajustes idempotentes**; la lista de permisos compartida coincide con la tabla; cada
   código de error de negocio tiene mensaje en español.
 - **Panel de punta a punta (6)**: una cuenta de cliente no accede; enrolamiento TOTP con código
-  incorrecto y correcto; crear producto (validaciones), agregar variante (GTIN inválido rechazado,
+  incorrecto y correcto; cookies de sesión `HttpOnly` e inaccesibles desde JavaScript; crear producto (validaciones), agregar variante (GTIN inválido rechazado,
   precio con IVA calculado), publicar, slug duplicado con mensaje claro y formulario conservado;
   crear bodega, ingreso, ajuste que dejaría stock negativo (rechazado), ajuste válido, saldos y
   libro con responsable; el rol de inventario consulta pero no edita el catálogo; cierre de sesión;

@@ -39,6 +39,8 @@ export default defineConfig({
       env: {
         SUPABASE_URL: `http://127.0.0.1:${API_PORT}`,
         SUPABASE_ANON_KEY: 'clave-publicable-local-de-prueba',
+        // El servidor de prueba usa http://127.0.0.1: se permiten cookies sin «Secure» SOLO aquí.
+        ADMIN_ALLOW_INSECURE_COOKIES: '1',
         NEXT_TELEMETRY_DISABLED: '1',
       },
     },
