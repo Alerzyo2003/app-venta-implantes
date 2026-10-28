@@ -1,12 +1,8 @@
 import NetInfo from '@react-native-community/netinfo';
 import { focusManager, onlineManager, QueryClient } from '@tanstack/react-query';
-import { toAppError } from '@repo/domain';
 import { AppState, Platform } from 'react-native';
 
-/** Solo se reintentan errores transitorios (red); los de negocio o permisos no. */
-export function shouldRetry(failureCount: number, error: unknown): boolean {
-  return toAppError(error).code === 'NETWORK' && failureCount < 3;
-}
+import { retryDelay, shouldRetry } from '@/lib/retry';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,7 +10,7 @@ export const queryClient = new QueryClient({
       staleTime: 30_000,
       gcTime: 10 * 60_000,
       retry: shouldRetry,
-      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 8000),
+      retryDelay,
     },
     mutations: {
       // Las mutaciones (carrito, pedidos) no se reintentan solas: el usuario decide.

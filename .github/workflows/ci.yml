@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'claude/**']
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    name: Tipos, lint y pruebas
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      # Las compilaciones de Expo no necesitan consultar api.expo.dev.
+      EXPO_OFFLINE: '1'
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: TypeScript
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Pruebas unitarias
+        run: |
+          pnpm --filter @repo/brand test
+          pnpm --filter @repo/domain test
+          pnpm --filter @repo/mobile test
+          pnpm --filter @repo/admin test
+
+      # PostgreSQL 16 viene instalado en ubuntu-24.04; tools/local-db crea el clúster y aplica
+      # la emulación de roles de Supabase, las migraciones y la semilla.
+      - name: Pruebas de base de datos
+        run: pnpm test:db
+
+      - name: Navegador para las pruebas de punta a punta
+        run: pnpm --filter @repo/admin exec playwright install --with-deps chromium
+
+      - name: Panel de punta a punta (base local + emulador)
+        run: pnpm --filter @repo/admin test:e2e
+
+      - name: Compilación de la app (iOS y Android)
+        run: pnpm --filter @repo/mobile export:check
+
+      - name: Informe de Playwright
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/admin/playwright-report
+          retention-days: 7

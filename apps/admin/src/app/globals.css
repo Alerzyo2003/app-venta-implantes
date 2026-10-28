@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+
+/*
+ * Tokens de color: las variables --brand-* se generan desde @repo/brand (src/lib/brand-css.ts)
+ * en el layout raíz, con variante clara y oscura. Aquí solo se les da nombre para Tailwind.
+ */
+@theme inline {
+  --color-primary: var(--brand-primary);
+  --color-primary-pressed: var(--brand-primary-pressed);
+  --color-on-primary: var(--brand-on-primary);
+  --color-accent: var(--brand-accent);
+  --color-on-accent: var(--brand-on-accent);
+  --color-accent-text: var(--brand-accent-text);
+  --color-page: var(--brand-surface);
+  --color-card: var(--brand-background);
+  --color-subtle: var(--brand-surface-alt);
+  --color-line: var(--brand-border);
+  --color-fg: var(--brand-text);
+  --color-fg-muted: var(--brand-text-muted);
+  --color-fg-inverse: var(--brand-text-inverse);
+  --color-success: var(--brand-success);
+  --color-success-surface: var(--brand-success-surface);
+  --color-warning: var(--brand-warning);
+  --color-warning-surface: var(--brand-warning-surface);
+  --color-danger: var(--brand-danger);
+  --color-danger-surface: var(--brand-danger-surface);
+  --color-info: var(--brand-info);
+  --color-info-surface: var(--brand-info-surface);
+  --color-overlay: var(--brand-overlay);
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-page);
+    color: var(--color-fg);
+  }
+  body {
+    @apply font-sans antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}

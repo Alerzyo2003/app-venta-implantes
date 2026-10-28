@@ -1,4 +1,5 @@
 import { addRecent, MAX_RECENT } from '../recent-searches';
+import { retryDelay, shouldRetry } from '../retry';
 import { compareVersions, isBelowMinimum } from '../version';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({}));
@@ -19,5 +20,24 @@ describe('versiones', () => {
     expect(compareVersions('0.1.0', '0.1')).toBe(0);
     expect(isBelowMinimum('0.1.0', '0.2.0')).toBe(true);
     expect(isBelowMinimum('0.2.0', undefined)).toBe(false);
+  });
+});
+
+describe('reintentos de consultas', () => {
+  it('reintenta solo errores de red y hasta 3 veces', () => {
+    const network = new TypeError('Network request failed');
+    expect(shouldRetry(0, network)).toBe(true);
+    expect(shouldRetry(2, network)).toBe(true);
+    expect(shouldRetry(3, network)).toBe(false);
+    expect(shouldRetry(0, { message: 'AbortError: signal is aborted without reason' })).toBe(true);
+  });
+
+  it('no reintenta errores de negocio ni de permisos', () => {
+    expect(shouldRetry(0, { code: 'P0001', message: 'OUT_OF_STOCK' })).toBe(false);
+    expect(shouldRetry(0, { code: '42501', message: 'permission denied for table orders' })).toBe(false);
+  });
+
+  it('espera de forma exponencial con un máximo de 8 s', () => {
+    expect([0, 1, 2, 3, 4].map(retryDelay)).toEqual([1000, 2000, 4000, 8000, 8000]);
   });
 });

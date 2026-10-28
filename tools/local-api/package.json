@@ -1,0 +1,13 @@
+{
+  "name": "@repo/local-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Emulador mínimo de Supabase Auth y REST sobre la base local, SOLO para pruebas de interfaz",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "pg": "8.23.1"
+  }
+}
