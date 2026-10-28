@@ -1,0 +1,45 @@
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Builds y caches
+dist/
+build/
+.next/
+out/
+.expo/
+.turbo/
+coverage/
+*.tsbuildinfo
+web-build/
+expo-env.d.ts
+
+# Native (generado por expo prebuild)
+apps/mobile/ios/
+apps/mobile/android/
+
+# Entornos y secretos (NUNCA versionar)
+.env
+.env.*
+!.env.example
+*.pem
+*.p8
+*.p12
+*.key
+*.jks
+*.keystore
+google-services.json
+GoogleService-Info.plist
+
+# Base de datos local de pruebas
+.local/
+supabase/.temp/
+supabase/.branches/
+
+# Sistema / editores
+.DS_Store
+*.log
+npm-debug.log*
+.idea/
+.vscode/*
+!.vscode/extensions.json
