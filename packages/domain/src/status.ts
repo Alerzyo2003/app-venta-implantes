@@ -65,8 +65,10 @@ export const PAYMENT_TRANSITIONS: Readonly<Record<PaymentStatus, readonly Paymen
   approved: ['partially_refunded', 'refunded'],
   partially_refunded: ['partially_refunded', 'refunded'],
   rejected: [],
-  cancelled: [],
-  expired: [],
+  // El proveedor confirma dinero capturado después de dar el intento por vencido/anulado:
+  // se registra y se aplica la lógica de pago tardío (reabrir o reembolsar).
+  cancelled: ['approved'],
+  expired: ['approved'],
   refunded: [],
 };
 

@@ -47,6 +47,11 @@ describe('máquina de estados del pago', () => {
     expect(canTransitionPayment('approved', 'pending')).toBe(false);
     expect(canTransitionPayment('rejected', 'approved')).toBe(false);
     expect(canTransitionPayment('refunded', 'approved')).toBe(false);
+    expect(canTransitionPayment('expired', 'pending')).toBe(false);
+  });
+  it('una aprobación confirmada por el proveedor tras vencer o anular se registra (pago tardío)', () => {
+    expect(canTransitionPayment('expired', 'approved')).toBe(true);
+    expect(canTransitionPayment('cancelled', 'approved')).toBe(true);
   });
   it('todos los estados tienen etiqueta', () => {
     for (const s of PAYMENT_STATUSES) expect(PAYMENT_STATUS_LABELS[s]).toBeTruthy();

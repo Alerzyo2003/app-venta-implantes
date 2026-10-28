@@ -158,8 +158,8 @@ erDiagram
   order_items ||--o{ order_items : "componentes de kit"
   orders ||--o{ order_status_history : ""
   orders ||--o{ order_internal_notes : ""
-  order_items ||--o{ order_item_allocations : "lotes despachados"
-  inventory_lots ||--o{ order_item_allocations : ""
+  orders ||--o{ order_allocations : "lotes despachados"
+  inventory_lots ||--o{ order_allocations : ""
   orders ||--o{ payments : ""
   payments ||--o{ payment_events : ""
   payments ||--o{ refunds : ""
@@ -178,7 +178,7 @@ erDiagram
 | `order_items` | MVP | **Snapshot inmutable**: `sku`, `manufacturer_ref`, `name`, `variant_label`, `quantity`, `unit_price_net`, `unit_price_gross`, `discount_net`, `line_net`, `tax_class`, `line_total`, `price_list_id`, `item_type` (`product`, `kit`, `kit_component`), `parent_item_id`. Un trigger impide modificar los ítems. |
 | `order_status_history` | MVP | `from_status`, `to_status`, `changed_by`, `reason`, `created_at`. |
 | `order_internal_notes` | MVP | Notas solo visibles para el personal. |
-| `order_item_allocations` | MVP | Lote y bodega despachados por ítem: base de la **trazabilidad de lotes** (qué pedidos contienen el lote X). |
+| `order_allocations` | MVP | Lote y bodega despachados por pedido y variante: base de la **trazabilidad de lotes** (qué pedidos contienen el lote X, `find_orders_by_lot`). El cliente ve los lotes que recibió. |
 | `payments` | MVP | `provider`, `method`, `status`, `amount`, `currency`, `buy_order` (referencia propia), `provider_token`, `provider_transaction_id`, `authorization_code`, `card_last4`, `installments`, `response_code`, `failure_reason`, `approved_at`. Sin PAN ni CVV. |
 | `payment_events` | MVP | Libro de eventos/webhooks: `provider`, `provider_event_id` (único por proveedor), `signature_valid`, `payload` saneado, `processed_at`, `result`. Solo personal. |
 | `refunds` | MVP (modelo) / F6 | `amount`, `status`, `provider_refund_id`, `reason`, `requested_by`, `approved_by`. |
@@ -211,7 +211,9 @@ stateDiagram-v2
 
 ### 5.2 Máquina de estados del pago
 
-`created` → `pending` → (`approved` | `rejected` | `cancelled` | `expired` | `error`); `approved` → (`partially_refunded` | `refunded`). Los estados finales no retroceden. Repetir el mismo resultado no tiene efectos (idempotente).
+`created` → `pending` → (`approved` | `rejected` | `cancelled` | `expired` | `error`); `approved` → (`partially_refunded` | `refunded`). Repetir el mismo resultado no tiene efectos (idempotente).
+
+Excepción deliberada: `expired` → `approved` y `cancelled` → `approved` se aceptan porque el proveedor es la fuente de verdad del dinero. Si confirma una captura después de que dimos el intento por vencido o anulado, se registra y se aplica la lógica de pago tardío: el pedido se reabre solo si se canceló por vencimiento de la reserva y hay stock; si no, se solicita un reembolso.
 
 ## 6. Módulos posteriores (diseño resumido)
 

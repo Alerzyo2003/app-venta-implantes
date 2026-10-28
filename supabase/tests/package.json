@@ -1,0 +1,20 @@
+{
+  "name": "@repo/db-tests",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pruebas de base de datos (RLS, funciones transaccionales) sobre PostgreSQL local con emulación de Supabase",
+  "type": "module",
+  "scripts": {
+    "test": "bash ../../tools/local-db/reset.sh && vitest run",
+    "test:only": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@repo/domain": "workspace:*",
+    "@types/node": "22.20.5",
+    "@types/pg": "8.23.1",
+    "pg": "8.23.1",
+    "typescript": "~6.0.3",
+    "vitest": "5.0.5"
+  }
+}
