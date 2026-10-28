@@ -63,28 +63,37 @@ export const loginSchema = z.object({
   password: z.string().min(1, 'Ingresa tu contraseña.'),
 });
 
-export const signUpSchema = z
-  .object({
-    fullName: z
-      .string()
-      .trim()
-      .min(3, 'Ingresa tu nombre completo.')
-      .max(120, 'El nombre es demasiado largo.'),
-    email: emailSchema,
-    phone: phoneSchema,
-    password: passwordSchema,
-    passwordConfirm: z.string(),
-    accountType: z.enum(ACCOUNT_TYPES, 'Selecciona un tipo de cuenta.'),
-    acceptTerms: z.literal(true, { error: 'Debes aceptar los términos y condiciones.' }),
-    acceptPrivacy: z.literal(true, { error: 'Debes aceptar la política de privacidad.' }),
-    marketingEmail: z.boolean(),
-    marketingWhatsapp: z.boolean(),
-    marketingPush: z.boolean(),
-  })
-  .refine((d) => d.password === d.passwordConfirm, {
-    error: 'Las contraseñas no coinciden.',
-    path: ['passwordConfirm'],
-  });
+/**
+ * Registro. `requireLegal` exige aceptar términos y privacidad: se usa cuando hay versiones
+ * vigentes publicadas (si aún no existen, no se puede aceptar un documento inexistente).
+ */
+export function createSignUpSchema(requireLegal = true) {
+  const acceptance = (message: string) => (requireLegal ? z.literal(true, { error: message }) : z.boolean());
+  return z
+    .object({
+      fullName: z
+        .string()
+        .trim()
+        .min(3, 'Ingresa tu nombre completo.')
+        .max(120, 'El nombre es demasiado largo.'),
+      email: emailSchema,
+      phone: phoneSchema,
+      password: passwordSchema,
+      passwordConfirm: z.string(),
+      accountType: z.enum(ACCOUNT_TYPES, 'Selecciona un tipo de cuenta.'),
+      acceptTerms: acceptance('Debes aceptar los términos y condiciones.'),
+      acceptPrivacy: acceptance('Debes aceptar la política de privacidad.'),
+      marketingEmail: z.boolean(),
+      marketingWhatsapp: z.boolean(),
+      marketingPush: z.boolean(),
+    })
+    .refine((d) => d.password === d.passwordConfirm, {
+      error: 'Las contraseñas no coinciden.',
+      path: ['passwordConfirm'],
+    });
+}
+
+export const signUpSchema = createSignUpSchema(true);
 
 export const forgotPasswordSchema = z.object({ email: emailSchema });
 
@@ -132,8 +141,8 @@ export const professionalVerificationSchema = z.object({
 });
 
 export type LoginInput = z.input<typeof loginSchema>;
-export type SignUpInput = z.input<typeof signUpSchema>;
-export type SignUpData = z.output<typeof signUpSchema>;
+export type SignUpInput = z.input<ReturnType<typeof createSignUpSchema>>;
+export type SignUpData = z.output<ReturnType<typeof createSignUpSchema>>;
 export type AddressInput = z.input<typeof addressSchema>;
 export type AddressData = z.output<typeof addressSchema>;
 export type BillingProfileInput = z.input<typeof billingProfileSchema>;

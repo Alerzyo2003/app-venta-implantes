@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   addressSchema,
   billingProfileSchema,
+  createSignUpSchema,
   emailSchema,
   passwordSchema,
   signUpSchema,
@@ -47,6 +48,11 @@ describe('signUpSchema', () => {
       const issue = r.error.issues.find((i) => i.path.join('.') === 'passwordConfirm');
       expect(issue?.message).toBe('Las contraseñas no coinciden.');
     }
+  });
+
+  it('sin documentos legales vigentes no se exige aceptarlos', () => {
+    const relaxed = createSignUpSchema(false);
+    expect(relaxed.safeParse({ ...validSignUp, acceptTerms: false, acceptPrivacy: false }).success).toBe(true);
   });
 
   it('rechaza tipo de cuenta desconocido', () => {

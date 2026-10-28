@@ -31,6 +31,8 @@ describe('toAppError', () => {
   it('detecta errores de red', () => {
     expect(toAppError(new TypeError('Network request failed')).code).toBe('NETWORK');
     expect(toAppError({ message: 'TypeError: Failed to fetch' }).code).toBe('NETWORK');
+    expect(toAppError({ message: 'AbortError: signal is aborted without reason', hint: 'Request was aborted (timeout or manual cancellation)' }).code).toBe('NETWORK');
+    expect(toAppError({ message: 'Aborted by the user in AbortError handling' }).code).toBe('UNKNOWN');
   });
 
   it('cae en UNKNOWN sin exponer detalles técnicos en el mensaje', () => {

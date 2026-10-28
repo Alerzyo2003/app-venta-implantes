@@ -132,7 +132,8 @@ export function toAppError(err: unknown): AppError {
   if (code === 'PGRST116') {
     return { code: 'NOT_FOUND', message: BUSINESS_ERROR_MESSAGES.NOT_FOUND };
   }
-  if (/network request failed|failed to fetch|networkerror/i.test(message)) {
+  // Fallas de red y solicitudes abortadas por tiempo máximo (PostgREST las informa como «AbortError: …»).
+  if (/network request failed|failed to fetch|networkerror|^(AbortError|TimeoutError)\b/i.test(message)) {
     return { code: 'NETWORK', message: BUSINESS_ERROR_MESSAGES.NETWORK };
   }
   return { code: 'UNKNOWN', message: BUSINESS_ERROR_MESSAGES.UNKNOWN, detail };
