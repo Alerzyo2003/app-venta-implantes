@@ -41,6 +41,8 @@ export const BUSINESS_ERROR_MESSAGES = {
   LOT_EXPIRY_MISMATCH: 'El lote ya existe con otra fecha de vencimiento.',
   ALREADY_VERIFIED: 'Tu cuenta profesional ya está verificada.',
   IMMUTABLE_RECORD: 'Este registro no se puede modificar.',
+  NO_ACTIVE_VARIANT: 'Para publicar el producto, agrega al menos una variante activa.',
+  DUPLICATE_REQUEST: 'Esta operación ya se había registrado con otros datos. Recarga la página y revisa los movimientos.',
   INVALID_INPUT: 'Revisa los datos ingresados.',
   NOT_FOUND: 'No encontramos lo que buscas.',
   RATE_LIMITED: 'Demasiadas solicitudes. Espera un momento e intenta nuevamente.',
@@ -67,6 +69,12 @@ export const AUTH_ERROR_MESSAGES: Readonly<Record<string, string>> = {
   signup_disabled: 'El registro de cuentas está deshabilitado temporalmente.',
   mfa_verification_failed: 'El código de verificación es incorrecto.',
   mfa_challenge_expired: 'El código de verificación expiró. Intenta nuevamente.',
+  mfa_factor_not_found: 'El método de verificación ya no existe. Configúralo nuevamente.',
+  mfa_factor_name_conflict: 'Ya existe un método de verificación con ese nombre.',
+  mfa_totp_enroll_not_enabled: 'La verificación en dos pasos con aplicación no está habilitada en el proyecto.',
+  mfa_totp_verify_not_enabled: 'La verificación en dos pasos con aplicación no está habilitada en el proyecto.',
+  insufficient_aal: 'Esta acción requiere verificación en dos pasos.',
+  reauthentication_needed: 'Por seguridad, vuelve a iniciar sesión antes de cambiar tu contraseña.',
 };
 
 export interface AppError {

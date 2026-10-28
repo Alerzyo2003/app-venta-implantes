@@ -19,6 +19,7 @@
 | `0600_search` | Buscador (texto completo, trigramas, códigos y filtros) y sugerencias |
 | `0700_reference_data` | Permisos, roles, configuración por defecto, categorías, regiones y comunas (CUT) |
 | `0800_scheduled_jobs` | pg_cron: liberación de reservas vencidas (solo donde pg_cron existe) |
+| `0900_admin_panel` | Funciones del panel (resumen, búsqueda de productos, inventario y movimientos), regla de publicación con variante activa, permiso para archivar e ingresos/ajustes idempotentes |
 
 ## Pruebas locales (sin Docker)
 
@@ -54,3 +55,4 @@ Aplicar primero en desarrollo/staging y luego en producción. Nunca guardar la c
 - Programación con pg_cron (`0800`).
 - Buckets y políticas de Storage para imágenes y documentos (se agregarán en el incremento 1).
 - Flujos de Auth reales (verificación de correo, recuperación y MFA) contra GoTrue.
+- Las consultas del panel y de la app contra PostgREST real (localmente se usa el emulador `tools/local-api`, que cubre solo un subconjunto).

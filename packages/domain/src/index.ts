@@ -5,6 +5,7 @@ export * from './errors';
 export * from './format';
 export * from './gs1';
 export * from './money';
+export * from './permissions';
 export * from './phone';
 export * from './pricing';
 export * from './rut';

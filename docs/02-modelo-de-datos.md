@@ -136,6 +136,7 @@ erDiagram
 | `lot_balances` | MVP | Por (lote, bodega): `on_hand`, `location`. Para las variantes con lote, Σ lotes = `stock_balances.on_hand` (lo garantizan las funciones de inventario y lo verifica una prueba). |
 | `stock_movements` | MVP | Libro inmutable: `movement_type` (`receipt`, `adjustment`, `sale_dispatch`, `return_restock`, `transfer_out`, `transfer_in`, `write_off`), `quantity` con signo, `reason`, `reference_type`/`reference_id`, `actor_id`, `on_hand_after`. |
 | `stock_reservations` | MVP | `order_id`, `variant_id`, `warehouse_id`, `quantity`, `status` (`active`, `committed`, `consumed`, `released`), `expires_at`. |
+| `inventory_requests` | MVP | Idempotencia de ingresos y ajustes del panel: `request_id` (único) → movimiento aplicado. Un reenvío devuelve el mismo movimiento; el mismo identificador con otros datos se rechaza (`DUPLICATE_REQUEST`). Sin acceso directo desde la API. |
 | `inventory_transfers`, `inventory_counts` | F5 | Transferencias entre bodegas y conteos con diferencias. |
 
 ### 4.1 Definiciones de stock

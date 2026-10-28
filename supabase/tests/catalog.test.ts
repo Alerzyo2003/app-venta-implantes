@@ -111,6 +111,9 @@ describe('administración del catálogo', () => {
     const [p] = await query<{ id: string }>(editor.actor,
       `insert into public.products (category_id, product_kind, name, slug)
        values ($1, 'general_supply', 'Guantes prueba', 'guantes-prueba-${cat.tag}') returning id`, [cat.categoryId]);
+    // Publicar exige además una variante activa (migración 0900).
+    await query(editor.actor, `insert into public.product_variants (product_id, sku) values ($1, $2)`,
+      [p!.id, `GUA-${cat.tag}`]);
     await expectDbError(
       query(editor.actor, `update public.products set status = 'published' where id = $1`, [p!.id]),
       { message: 'PERMISSION_DENIED' });
