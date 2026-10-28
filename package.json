@@ -1,0 +1,25 @@
+{
+  "name": "plataforma-implantes",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Plataforma de venta de implantes dentales e insumos odontológicos (Chile)",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "typecheck": "pnpm -r --if-present typecheck",
+    "lint": "pnpm -r --if-present lint",
+    "test": "pnpm -r --if-present test",
+    "test:db": "pnpm --filter @repo/db-tests test",
+    "db:start": "bash tools/local-db/start.sh",
+    "db:stop": "bash tools/local-db/stop.sh",
+    "db:reset": "bash tools/local-db/reset.sh",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "3.9.10",
+    "typescript": "~6.0.3"
+  }
+}

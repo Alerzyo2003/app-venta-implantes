@@ -1,0 +1,20 @@
+{
+  "name": "@repo/brand",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Identidad visual temporal y configurable (nombre comercial pendiente)",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.3",
+    "vitest": "5.0.5"
+  }
+}

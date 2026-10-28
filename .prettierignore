@@ -1,0 +1,9 @@
+node_modules
+.local
+.next
+.expo
+dist
+coverage
+pnpm-lock.yaml
+supabase/migrations
+*.sql

@@ -1,0 +1,233 @@
+{
+  "description": "Vectores de prueba compartidos para el cálculo de totales (ADR-0004). Los valores esperados se calcularon a mano. Los usan las pruebas de packages/domain y las de la base de datos (supabase/tests).",
+  "cases": [
+    {
+      "name": "boleta simple",
+      "input": {
+        "priceMode": "gross",
+        "taxRateBp": 1900,
+        "shippingNet": 0,
+        "lines": [{ "unitPriceNet": 10000, "quantity": 3, "taxClass": "iva" }]
+      },
+      "expected": {
+        "subtotalNet": 30000,
+        "shippingGross": 0,
+        "taxableNet": 30000,
+        "exemptNet": 0,
+        "taxAmount": 5700,
+        "total": 35700,
+        "lines": [{ "unitPriceGross": 11900, "lineNet": 30000, "lineGross": 35700, "lineTotal": 35700 }]
+      }
+    },
+    {
+      "name": "factura simple",
+      "input": {
+        "priceMode": "net",
+        "taxRateBp": 1900,
+        "shippingNet": 0,
+        "lines": [{ "unitPriceNet": 10000, "quantity": 3, "taxClass": "iva" }]
+      },
+      "expected": {
+        "subtotalNet": 30000,
+        "shippingGross": 0,
+        "taxableNet": 30000,
+        "exemptNet": 0,
+        "taxAmount": 5700,
+        "total": 35700,
+        "lines": [{ "unitPriceGross": 11900, "lineNet": 30000, "lineGross": 35700, "lineTotal": 30000 }]
+      }
+    },
+    {
+      "name": "boleta con redondeo del precio bruto",
+      "input": {
+        "priceMode": "gross",
+        "taxRateBp": 1900,
+        "shippingNet": 0,
+        "lines": [{ "unitPriceNet": 8403, "quantity": 3, "taxClass": "iva" }]
+      },
+      "expected": {
+        "subtotalNet": 25209,
+        "shippingGross": 0,
+        "taxableNet": 25210,
+        "exemptNet": 0,
+        "taxAmount": 4790,
+        "total": 30000,
+        "lines": [{ "unitPriceGross": 10000, "lineNet": 25209, "lineGross": 30000, "lineTotal": 30000 }]
+      }
+    },
+    {
+      "name": "factura con redondeo del IVA",
+      "input": {
+        "priceMode": "net",
+        "taxRateBp": 1900,
+        "shippingNet": 0,
+        "lines": [{ "unitPriceNet": 8403, "quantity": 3, "taxClass": "iva" }]
+      },
+      "expected": {
+        "subtotalNet": 25209,
+        "shippingGross": 0,
+        "taxableNet": 25209,
+        "exemptNet": 0,
+        "taxAmount": 4790,
+        "total": 29999,
+        "lines": [{ "unitPriceGross": 10000, "lineNet": 25209, "lineGross": 30000, "lineTotal": 25209 }]
+      }
+    },
+    {
+      "name": "empate .5 se redondea hacia arriba (boleta)",
+      "input": {
+        "priceMode": "gross",
+        "taxRateBp": 1900,
+        "shippingNet": 0,
+        "lines": [{ "unitPriceNet": 50, "quantity": 1, "taxClass": "iva" }]
+      },
+      "expected": {
+        "subtotalNet": 50,
+        "shippingGross": 0,
+        "taxableNet": 50,
+        "exemptNet": 0,
+        "taxAmount": 10,
+        "total": 60,
+        "lines": [{ "unitPriceGross": 60, "lineNet": 50, "lineGross": 60, "lineTotal": 60 }]
+      }
+    },
+    {
+      "name": "empate .5 se redondea hacia arriba (factura)",
+      "input": {
+        "priceMode": "net",
+        "taxRateBp": 1900,
+        "shippingNet": 0,
+        "lines": [{ "unitPriceNet": 50, "quantity": 1, "taxClass": "iva" }]
+      },
+      "expected": {
+        "subtotalNet": 50,
+        "shippingGross": 0,
+        "taxableNet": 50,
+        "exemptNet": 0,
+        "taxAmount": 10,
+        "total": 60,
+        "lines": [{ "unitPriceGross": 60, "lineNet": 50, "lineGross": 60, "lineTotal": 50 }]
+      }
+    },
+    {
+      "name": "afecto + exento + despacho (factura)",
+      "input": {
+        "priceMode": "net",
+        "taxRateBp": 1900,
+        "shippingNet": 4990,
+        "lines": [
+          { "unitPriceNet": 12990, "quantity": 2, "taxClass": "iva" },
+          { "unitPriceNet": 5000, "quantity": 1, "taxClass": "exempt" }
+        ]
+      },
+      "expected": {
+        "subtotalNet": 30980,
+        "shippingGross": 5938,
+        "taxableNet": 30970,
+        "exemptNet": 5000,
+        "taxAmount": 5884,
+        "total": 41854,
+        "lines": [
+          { "unitPriceGross": 15458, "lineNet": 25980, "lineGross": 30916, "lineTotal": 25980 },
+          { "unitPriceGross": 5000, "lineNet": 5000, "lineGross": 5000, "lineTotal": 5000 }
+        ]
+      }
+    },
+    {
+      "name": "afecto + exento + despacho (boleta)",
+      "input": {
+        "priceMode": "gross",
+        "taxRateBp": 1900,
+        "shippingNet": 4990,
+        "lines": [
+          { "unitPriceNet": 12990, "quantity": 2, "taxClass": "iva" },
+          { "unitPriceNet": 5000, "quantity": 1, "taxClass": "exempt" }
+        ]
+      },
+      "expected": {
+        "subtotalNet": 30980,
+        "shippingGross": 5938,
+        "taxableNet": 30970,
+        "exemptNet": 5000,
+        "taxAmount": 5884,
+        "total": 41854,
+        "lines": [
+          { "unitPriceGross": 15458, "lineNet": 25980, "lineGross": 30916, "lineTotal": 30916 },
+          { "unitPriceGross": 5000, "lineNet": 5000, "lineGross": 5000, "lineTotal": 5000 }
+        ]
+      }
+    },
+    {
+      "name": "monto mínimo: IVA cero (boleta)",
+      "input": {
+        "priceMode": "gross",
+        "taxRateBp": 1900,
+        "shippingNet": 0,
+        "lines": [{ "unitPriceNet": 1, "quantity": 1, "taxClass": "iva" }]
+      },
+      "expected": {
+        "subtotalNet": 1,
+        "shippingGross": 0,
+        "taxableNet": 1,
+        "exemptNet": 0,
+        "taxAmount": 0,
+        "total": 1,
+        "lines": [{ "unitPriceGross": 1, "lineNet": 1, "lineGross": 1, "lineTotal": 1 }]
+      }
+    },
+    {
+      "name": "cantidades altas (factura)",
+      "input": {
+        "priceMode": "net",
+        "taxRateBp": 1900,
+        "shippingNet": 0,
+        "lines": [{ "unitPriceNet": 189990, "quantity": 12, "taxClass": "iva" }]
+      },
+      "expected": {
+        "subtotalNet": 2279880,
+        "shippingGross": 0,
+        "taxableNet": 2279880,
+        "exemptNet": 0,
+        "taxAmount": 433177,
+        "total": 2713057,
+        "lines": [{ "unitPriceGross": 226088, "lineNet": 2279880, "lineGross": 2713056, "lineTotal": 2279880 }]
+      }
+    },
+    {
+      "name": "cantidades altas (boleta)",
+      "input": {
+        "priceMode": "gross",
+        "taxRateBp": 1900,
+        "shippingNet": 0,
+        "lines": [{ "unitPriceNet": 189990, "quantity": 12, "taxClass": "iva" }]
+      },
+      "expected": {
+        "subtotalNet": 2279880,
+        "shippingGross": 0,
+        "taxableNet": 2279879,
+        "exemptNet": 0,
+        "taxAmount": 433177,
+        "total": 2713056,
+        "lines": [{ "unitPriceGross": 226088, "lineNet": 2279880, "lineGross": 2713056, "lineTotal": 2713056 }]
+      }
+    },
+    {
+      "name": "solo exentos",
+      "input": {
+        "priceMode": "net",
+        "taxRateBp": 1900,
+        "shippingNet": 0,
+        "lines": [{ "unitPriceNet": 7000, "quantity": 2, "taxClass": "exempt" }]
+      },
+      "expected": {
+        "subtotalNet": 14000,
+        "shippingGross": 0,
+        "taxableNet": 0,
+        "exemptNet": 14000,
+        "taxAmount": 0,
+        "total": 14000,
+        "lines": [{ "unitPriceGross": 7000, "lineNet": 14000, "lineGross": 14000, "lineTotal": 14000 }]
+      }
+    }
+  ]
+}
