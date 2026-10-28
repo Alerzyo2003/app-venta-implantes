@@ -93,7 +93,7 @@ Diseño responsive: barra lateral en escritorio y menú desplegable en tablet o 
 | Sección | Pantallas | Permiso base | Fase |
 |---|---|---|---|
 | Acceso | Inicio de sesión del personal, enrolamiento y verificación MFA (TOTP) | personal interno | MVP |
-| Inicio | Resumen operativo: pedidos por estado, stock bajo, verificaciones pendientes | `orders.read` | MVP |
+| Inicio | Resumen operativo: productos por estado, stock bajo y agotado, lotes por vencer o bloqueados, pedidos por estado, verificaciones pendientes | Personal interno (cada bloque según sus permisos) | MVP |
 | Catálogo | Productos (lista, filtros, crear, editar, duplicar, archivar), variantes, fotos, documentos, categorías, marcas, fabricantes, sistemas, plataformas, conexiones, atributos | `catalog.*` | MVP |
 | Compatibilidades | Lista por implante o componente, crear un vínculo, adjuntar evidencia, verificar o rechazar | `compatibility.*` | MVP |
 | Precios | Lista base, tramos por volumen, historial | `prices.*` | MVP |
