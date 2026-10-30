@@ -4,7 +4,7 @@ Versión 0.1 — 2026-10-28. Cada decisión incluye una **recomendación** y su 
 
 | ID | Decisión | Bloquea | Estado |
 |---|---|---|---|
-| D-01 | Proyecto Supabase para desarrollo, staging y producción | Inc. 1 (pruebas reales), despliegue | **Pendiente** |
+| D-01 | Proyecto Supabase para desarrollo, staging y producción | Inc. 1 (pruebas reales), despliegue | **Aprobada para desarrollo** (2026-10-29); producción pendiente |
 | D-02 | Modelo comercial y visibilidad (B2B, B2C o mixto; precios; venta de implantes) | Inc. 1 | **Pendiente** |
 | D-03 | Proveedor de pagos | Inc. 4 | **Pendiente** |
 | D-04 | Precios netos o brutos y proveedor de facturación electrónica | Inc. 3 (visualización), F6 (DTE) | **Pendiente** (se asume la recomendación como valor por defecto configurable) |
@@ -34,6 +34,12 @@ En tu organización de Supabase existen 6 proyectos (`bd-app`, `tienda-clinica`,
 - Si prefieres reutilizar `tienda-clinica`, confírmalo: está en `us-east-1` (mayor latencia desde Chile) e inactivo.
 - **Impacto**: sin un proyecto no se pueden probar de punta a punta Auth, la API ni Storage, y la app no puede conectarse.
 - Crear un proyecto puede tener costo. **Necesito tu aprobación expresa** para crearlo con el conector de Supabase.
+
+**Resolución (2026-10-29)**: aprobado el proyecto de desarrollo. Se creó
+`plataforma-implantes-dev` (ref `snxzwnvhohzonzpypxxd`) en **sa-east-1**, plan gratuito, en la
+organización «Clinica dignidad». Los proyectos existentes no se modificaron. El proyecto de
+producción se decidirá antes del lanzamiento. Estado de las migraciones en
+[`supabase/README.md`](../supabase/README.md#proyecto-de-desarrollo-d-01).
 
 ### D-02 · Modelo comercial y visibilidad
 

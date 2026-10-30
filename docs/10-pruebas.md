@@ -21,6 +21,7 @@ pnpm --filter @repo/mobile test        # componentes de la app (Jest)
 pnpm --filter @repo/admin test         # unitarias del panel (Vitest)
 pnpm db:start && pnpm --filter @repo/admin test:e2e   # panel de punta a punta (Playwright)
 EXPO_OFFLINE=1 pnpm --filter @repo/mobile export:check  # compila iOS y Android (Hermes)
+pnpm db:fingerprint                    # huella del esquema para compararla con un proyecto remoto
 ```
 
 `EXPO_OFFLINE=1` solo es necesario donde `api.expo.dev` no es accesible.

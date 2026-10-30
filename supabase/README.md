@@ -50,6 +50,38 @@ npx supabase db push
 
 Aplicar primero en desarrollo/staging y luego en producción. Nunca guardar la contraseña de la base ni la `service_role key` en el repositorio.
 
+### Verificar que el proyecto coincide con las migraciones
+
+`pnpm db:fingerprint` crea una base local temporal solo con las migraciones y muestra su huella:
+una fila por tipo de objeto (funciones, privilegios, tablas, restricciones, índices, políticas,
+disparadores, datos de referencia…). Ejecuta
+[`tools/local-db/schema-fingerprint.sql`](../tools/local-db/schema-fingerprint.sql) en el editor
+SQL del proyecto: las dos salidas deben ser idénticas. Si un tipo difiere, cambia la consulta final
+del archivo por `select * from fp where kind = '<tipo>'` en ambos lados para ubicar el objeto.
+
+## Proyecto de desarrollo (D-01)
+
+| Dato | Valor |
+|---|---|
+| Proyecto | `plataforma-implantes-dev` (ref `snxzwnvhohzonzpypxxd`) |
+| Región y plan | sa-east-1 (São Paulo), gratuito |
+| Organización | «Clinica dignidad» |
+| Creado | 2026-10-29 |
+
+Estado de las migraciones (2026-10-30), aplicadas con el conector de Supabase:
+
+| Migración | Estado |
+|---|---|
+| `0100` a `0400` | Aplicadas |
+| `0500_orders` | Aplicada hasta `cart_clear` (línea 841). Falta desde «Cotización del carrito» (línea 842) hasta el final |
+| `0600` a `0900` | Pendientes |
+
+El conector registra cada migración con la fecha de aplicación como versión (por ejemplo
+`20261029114852_base`). Al terminar, el historial (`supabase_migrations.schema_migrations`) debe
+quedar con las versiones de los archivos (`20261028000100` … `20261028000900`), una por archivo,
+para que `supabase db push` no intente reaplicarlas. Después se verifica con la huella y con los
+avisos de seguridad y rendimiento de Supabase.
+
 ## Pendiente de verificar en un proyecto Supabase real (D-01)
 
 - Programación con pg_cron (`0800`).

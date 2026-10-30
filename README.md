@@ -10,7 +10,7 @@ Plataforma de comercio electrónico B2B/B2C para Chile: app móvil (iOS/Android)
 - Backend Supabase: 9 migraciones con RLS, funciones transaccionales y auditoría, probadas sobre PostgreSQL local (199 pruebas).
 - App móvil (Expo): cuentas, catálogo, búsqueda, lector GS1/UDI, ficha con compatibilidades verificadas, favoritos, carrito y pedidos. **El pago en línea aún no está habilitado** (decisión D-03).
 - Panel (Next.js): acceso del personal con MFA, productos, variantes, precios, inventario, lotes, movimientos y bodegas, probado de punta a punta con la base local.
-- **Aún no hay un proyecto Supabase dedicado** (D-01): nada se ha probado contra Supabase real ni en dispositivos físicos.
+- Proyecto Supabase de desarrollo creado (D-01), con las migraciones en aplicación ([estado](supabase/README.md#proyecto-de-desarrollo-d-01)). Todavía nada se ha probado contra Supabase real ni en dispositivos físicos.
 
 **Ninguna integración externa (pagos, facturación, despacho, correo, push, WhatsApp Business) está operativa todavía.** Ver las [decisiones pendientes](docs/07-decisiones-pendientes.md). El detalle por requisito está en [`docs/08-estado-de-avance.md`](docs/08-estado-de-avance.md) y los resultados de pruebas en [`docs/10-pruebas.md`](docs/10-pruebas.md).
 

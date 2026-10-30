@@ -15,6 +15,7 @@
     "db:start": "bash tools/local-db/start.sh",
     "db:stop": "bash tools/local-db/stop.sh",
     "db:reset": "bash tools/local-db/reset.sh",
+    "db:fingerprint": "bash tools/local-db/fingerprint.sh",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
