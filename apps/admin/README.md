@@ -52,6 +52,10 @@ usuarios y roles, auditoría y configuración.
 
 Sin las variables, el panel muestra «Configuración pendiente» en vez de simular datos.
 
+Si el servidor del panel sale a internet a través de un proxy (`HTTPS_PROXY`), Node no lo usa por
+omisión y el ingreso muestra «Sin conexión»: inicia el panel con `NODE_USE_ENV_PROXY=1`
+(Node 22.21 o superior).
+
 ### Primer administrador
 
 Los roles solo los asigna quien ya tiene `users.manage_roles`. Para el primer administrador, crea
@@ -95,8 +99,9 @@ Si el navegador de Playwright no está instalado: `pnpm --filter @repo/admin exe
 permite cookies sin `Secure`; **nunca** debe definirse en un despliegue.
 
 > Las pruebas con el emulador verifican la interfaz, los permisos y las reglas de la base real,
-> pero **no** reemplazan las pruebas contra Supabase Auth y PostgREST reales, pendientes hasta
-> contar con el proyecto de desarrollo (D-01).
+> pero **no** reemplazan las pruebas contra Supabase Auth y PostgREST reales. Contra el proyecto
+> de desarrollo (D-01) ya se verificó el ingreso fallido y la protección de las páginas; falta el
+> recorrido con una cuenta del personal (ver [10-pruebas.md](../../docs/10-pruebas.md)).
 
 ## Estructura
 

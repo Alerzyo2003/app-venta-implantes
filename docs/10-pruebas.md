@@ -45,10 +45,15 @@ La integración continua ([`.github/workflows/ci.yml`](../.github/workflows/ci.y
 | 2026-10-28 | Panel: revisión visual (1280 y 390 px, claro y oscuro) | capturas automatizadas | Sin errores de consola ni bloqueos de CSP; sin desplazamiento horizontal en móvil |
 | 2026-10-30 | Proyecto Supabase de desarrollo (PostgreSQL 17) frente a la base local (16): huella del esquema de las migraciones `0100`–`0800` | `pnpm db:fingerprint 20261028000800` y la misma consulta en el proyecto | **11/11** tipos idénticos: 350 restricciones, 86 funciones y sus privilegios, 62 tablas y sus privilegios, 136 índices, 112 políticas, 68 disparadores y el contenido de 54 tablas |
 | 2026-10-30 | pg_cron en el proyecto de desarrollo | consulta a `cron.job` y `cron.job_run_details` | Tarea `release-expired-reservations` activa cada minuto; 7 ejecuciones, todas exitosas |
+| 2026-10-30 | Base de datos: 10 migraciones (nueva `1000`: privilegios de la API) | `pnpm test:db` | **202/202** aprobadas. La prueba nueva falla sin la migración (7 funciones expuestas sin sesión) |
+| 2026-10-30 | Panel: punta a punta con las 10 migraciones | `pnpm --filter @repo/admin test:e2e` | **6/6** aprobadas |
+| 2026-10-30 | Proyecto de desarrollo: huella del esquema con las 10 migraciones | `pnpm db:fingerprint` y la misma consulta en el proyecto | **11/11** tipos idénticos |
+| 2026-10-30 | API real (PostgREST) como usuario anónimo, con la clave publicable | `curl` a `/rest/v1` | **14/14** según lo esperado: 12 categorías, 16 regiones, 346 comunas, 0 productos, solo la configuración pública, auditoría vacía, búsqueda vacía, sugerencia «Implantes dentales» para «imp», y rechazo (401) de `assign_role`, `place_order`, `apply_payment_result` y de crear una categoría |
+| 2026-10-30 | Panel de producción conectado al proyecto real (Auth real) | `next start` + Playwright | Ingreso con cuenta inexistente: «Correo o contraseña incorrectos.»; las páginas protegidas redirigen al ingreso; cabeceras de seguridad y CSP presentes; sin errores de consola |
 
 ### Qué cubren
 
-- **Base de datos (199)**: aislamiento por RLS entre clientes y por rol del personal; MFA exigida
+- **Base de datos (202)**: aislamiento por RLS entre clientes y por rol del personal; MFA exigida
   al personal (`aal2`); funciones de catálogo, búsqueda (texto, tildes, errores de escritura,
   códigos y medidas), compatibilidades solo con evidencia; precios e IVA con los mismos vectores
   que el dominio; inventario (ingresos con lote y vencimiento, ajustes con motivo, sin stock
@@ -58,7 +63,8 @@ La integración continua ([`.github/workflows/ci.yml`](../.github/workflows/ci.y
   funciones del panel (resumen por permisos, búsqueda de productos, vista de inventario, libro con
   responsable), regla de publicación con variante activa, permiso para archivar e
   **ingresos/ajustes idempotentes**; la lista de permisos compartida coincide con la tabla; cada
-  código de error de negocio tiene mensaje en español.
+  código de error de negocio tiene mensaje en español; sin sesión solo se ejecutan las funciones
+  del catálogo público y las de pagos quedan reservadas al servidor.
 - **Panel de punta a punta (6)**: una cuenta de cliente no accede; enrolamiento TOTP con código
   incorrecto y correcto; cookies de sesión `HttpOnly` e inaccesibles desde JavaScript; crear producto (validaciones), agregar variante (GTIN inválido rechazado,
   precio con IVA calculado), publicar, slug duplicado con mensaje claro y formulario conservado;
@@ -80,9 +86,10 @@ La integración continua ([`.github/workflows/ci.yml`](../.github/workflows/ci.y
 
 ## Pendiente de probar (requiere servicios o equipos que aún no existen)
 
-- Contra el **proyecto Supabase de desarrollo** (D-01): registro y verificación de correo,
-  recuperación de contraseña, MFA real (TOTP), consultas de la app y del panel contra PostgREST y
-  Storage. El esquema y pg_cron ya están verificados (ver el registro).
+- Contra el **proyecto Supabase de desarrollo** (D-01), con cuentas reales: registro y
+  verificación de correo, recuperación de contraseña, MFA (TOTP), las consultas con sesión de la
+  app y del panel, y Storage. El esquema, pg_cron, el acceso anónimo a la API y el ingreso fallido
+  al panel ya están verificados (ver el registro).
 - App en **dispositivos iOS y Android** reales (cámara, almacenamiento seguro, tamaños de pantalla,
   conectividad intermitente).
 - **Pago real** en el ambiente de integración del proveedor aprobado (D-03).

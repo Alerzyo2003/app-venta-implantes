@@ -20,6 +20,7 @@
 | `0700_reference_data` | Permisos, roles, configuración por defecto, categorías, regiones y comunas (CUT) |
 | `0800_scheduled_jobs` | pg_cron: liberación de reservas vencidas (solo donde pg_cron existe) |
 | `0900_admin_panel` | Funciones del panel (resumen, búsqueda de productos, inventario y movimientos), regla de publicación con variante activa, permiso para archivar e ingresos/ajustes idempotentes |
+| `1000_api_privileges` | Las funciones que exigen sesión dejan de ser ejecutables sin ella (aviso de seguridad de Supabase) |
 
 ## Pruebas locales (sin Docker)
 
@@ -66,26 +67,35 @@ para ubicar el objeto.
 | Dato | Valor |
 |---|---|
 | Proyecto | `plataforma-implantes-dev` (ref `snxzwnvhohzonzpypxxd`) |
-| Región y plan | sa-east-1 (São Paulo), gratuito |
+| URL de la API | `https://snxzwnvhohzonzpypxxd.supabase.co` |
+| Región y plan | sa-east-1 (São Paulo), gratuito; PostgreSQL 17 |
 | Organización | «Clinica dignidad» |
 | Creado | 2026-10-29 |
 
-Estado de las migraciones (2026-10-30), aplicadas con el conector de Supabase:
+Estado al 2026-10-30:
 
-| Migración | Estado |
+- **Las 10 migraciones están aplicadas y verificadas**: la huella del proyecto coincide en los 11
+  tipos de objeto con `pnpm db:fingerprint`.
+- **Historial alineado**: `supabase_migrations.schema_migrations` tiene una fila por archivo, con
+  su versión (`20261028000100` … `20261028001000`), así que `supabase db push` solo aplicará
+  migraciones nuevas. El conector de Supabase registra cada migración con la fecha en que se
+  aplica: después de usarlo, se cambia la versión registrada por la del archivo.
+- **pg_cron** libera las reservas vencidas cada minuto sin errores.
+- **Auth**: registro abierto con correo confirmado obligatorio (solo proveedor de correo).
+- **Avisos de Supabase revisados**:
+
+| Aviso | Estado |
 |---|---|
-| `0100` a `0800` | Aplicadas y verificadas con la huella: los 11 tipos de objeto coinciden con `pnpm db:fingerprint 20261028000800`. pg_cron ejecuta la liberación de reservas cada minuto sin errores |
-| `0900_admin_panel` | Pendiente: el conector pide confirmar porque borra y vuelve a crear dos funciones de inventario |
+| Funciones `SECURITY DEFINER` ejecutables sin sesión | Corregido con `1000`. Quedan abiertas a propósito `get_variant_prices` y `get_availability` (catálogo público). Una prueba de base de datos impide exponer otras |
+| Funciones `SECURITY DEFINER` ejecutables con sesión (25) | Por diseño: son las operaciones de la API y cada una valida sesión, MFA y permisos en el servidor (pruebas de base de datos) |
+| `inventory_requests` con RLS y sin políticas | Por diseño: solo la usan las funciones de inventario |
+| Varias políticas permisivas de lectura en 15 tablas | Las políticas de escritura `for all` también cubren la lectura. El costo es mínimo (cada permiso se evalúa una vez por consulta); se separarán por operación cuando haya volumen real |
+| Claves foráneas sin índice (36) e índices sin uso (49) | Base sin datos: se revisarán con el uso real para no agregar índices que solo encarecen las escrituras |
 
-El conector registra cada migración con la fecha de aplicación como versión (por ejemplo
-`20261029114852_base`), y `0500` quedó en dos registros (`orders` y `orders_part2`) porque se
-aplicó en dos partes. Al terminar, el historial (`supabase_migrations.schema_migrations`) debe
-quedar con las versiones de los archivos (`20261028000100` … `20261028000900`), una por archivo,
-para que `supabase db push` no intente reaplicarlas. Después se verifica con la huella y con los
-avisos de seguridad y rendimiento de Supabase.
-
-## Pendiente de verificar en un proyecto Supabase real (D-01)
+## Pendiente de verificar en el proyecto de desarrollo
 
 - Buckets y políticas de Storage para imágenes y documentos (se agregarán en el incremento 1).
-- Flujos de Auth reales (verificación de correo, recuperación y MFA) contra GoTrue.
-- Las consultas del panel y de la app contra PostgREST real (localmente se usa el emulador `tools/local-api`, que cubre solo un subconjunto).
+- Flujos de Auth con cuentas reales (verificación de correo, recuperación y MFA): requieren el
+  correo transaccional (D-08) o crear las cuentas desde el dashboard.
+- Las consultas con sesión (cliente y personal) contra PostgREST real. Ya está verificado el acceso
+  anónimo: catálogo, configuración pública, búsqueda y rechazo de escrituras y funciones protegidas.

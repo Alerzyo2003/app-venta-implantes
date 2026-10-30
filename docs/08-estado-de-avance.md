@@ -9,7 +9,7 @@ Estados:
 - **Terminado**: implementado; las pruebas automatizadas aún no cubren todo el flujo o falta probarlo contra un servicio real.
 - **Probado**: implementado y verificado con pruebas ejecutadas y registradas en [10-pruebas.md](10-pruebas.md). Se indica el nivel: *BD* (PostgreSQL local con RLS reales), *dominio*, *E2E local* (panel con la base local y el emulador `tools/local-api`).
 
-> Regla: nada se marca **Probado** sin una ejecución real registrada. Ninguna función está probada todavía contra un proyecto Supabase real ni en dispositivos físicos (ver [10-pruebas.md](10-pruebas.md#pendiente-de-probar-requiere-servicios-o-equipos-que-aún-no-existen)).
+> Regla: nada se marca **Probado** sin una ejecución real registrada. En el proyecto Supabase de desarrollo ya están verificados el esquema completo, pg_cron, el acceso anónimo a la API y el ingreso fallido al panel; los flujos con cuentas reales y los dispositivos físicos siguen pendientes (ver [10-pruebas.md](10-pruebas.md#pendiente-de-probar-requiere-servicios-o-equipos-que-aún-no-existen)).
 
 ## Resumen por fase
 
@@ -91,7 +91,7 @@ Estados:
 | ID | Estado | Detalle |
 |---|---|---|
 | ROL-01 | En desarrollo | 7 roles y 40 permisos; el panel adapta la navegación (E2E local). Gestión de roles en el panel pendiente. |
-| ROL-02 | Probado (BD) | Operaciones sensibles validadas en la base. |
+| ROL-02 | Probado (BD, API real) | Operaciones sensibles validadas en la base; sin sesión, la API real rechaza asignar roles, crear pedidos o aplicar pagos. |
 | ROL-03 | Probado (BD) | Auditoría de solo inserción; vista en el panel pendiente. |
 | SEG-01 | Terminado | RLS, MFA del personal, cookies de sesión HttpOnly con cierre por inactividad, CSP con nonce y cabeceras de seguridad. |
 | SEG-02 | En desarrollo | Secretos fuera del código y errores sin detalles técnicos. Webhooks y límites propios pendientes. |
@@ -109,4 +109,4 @@ Estados:
 | 2026-10-28 | 1 | Inspección del entorno: repositorio vacío; Node 22, pnpm 10 y PostgreSQL 16 disponibles; Docker sin acceso a las imágenes de Supabase. Documentación de la fase 1. |
 | 2026-10-28 | 1 | Monorepo, paquete de dominio, esquema Supabase (9 migraciones) con RLS y RPC, base local de pruebas sin Docker, app móvil Expo, panel Next.js y emulador local para pruebas E2E. |
 | 2026-10-29 | 2 | D-01 aprobada: proyecto `plataforma-implantes-dev` creado (sa-east-1, gratuito). Migraciones `0100`–`0400` y parte de `0500` aplicadas; el resto quedó detenido porque el conector de Supabase pidió confirmaciones que no se alcanzaron a responder y luego quedó conectado a otra cuenta. |
-| 2026-10-30 | 2 | Red del entorno habilitada hacia el proyecto. Huella del esquema (`pnpm db:fingerprint`) para comprobar que el proyecto remoto coincide con las migraciones. Conector reconectado: `0500`–`0800` aplicadas; `0100`–`0800` verificadas con la huella (idénticas al repositorio) y pg_cron funcionando. `0900` a la espera de la confirmación del conector. |
+| 2026-10-30 | 2 | Red del entorno habilitada hacia el proyecto. Huella del esquema (`pnpm db:fingerprint`) para comprobar que el proyecto remoto coincide con las migraciones. Conector reconectado: las 9 migraciones aplicadas e idénticas al repositorio; historial alineado con los archivos; pg_cron funcionando. Avisos de Supabase revisados: nueva migración `1000` que cierra a anónimos 7 funciones que exigen sesión (con prueba). API real verificada como anónimo y panel conectado a Auth real. |
