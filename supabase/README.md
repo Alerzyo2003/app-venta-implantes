@@ -56,8 +56,10 @@ Aplicar primero en desarrollo/staging y luego en producción. Nunca guardar la c
 una fila por tipo de objeto (funciones, privilegios, tablas, restricciones, índices, políticas,
 disparadores, datos de referencia…). Ejecuta
 [`tools/local-db/schema-fingerprint.sql`](../tools/local-db/schema-fingerprint.sql) en el editor
-SQL del proyecto: las dos salidas deben ser idénticas. Si un tipo difiere, cambia la consulta final
-del archivo por `select * from fp where kind = '<tipo>'` en ambos lados para ubicar el objeto.
+SQL del proyecto: las dos salidas deben ser idénticas. Si el proyecto aún no tiene todas las
+migraciones, `pnpm db:fingerprint <versión>` aplica solo hasta esa versión. Si un tipo difiere,
+cambia la consulta final del archivo por `select * from fp where kind = '<tipo>'` en ambos lados
+para ubicar el objeto.
 
 ## Proyecto de desarrollo (D-01)
 
@@ -72,19 +74,18 @@ Estado de las migraciones (2026-10-30), aplicadas con el conector de Supabase:
 
 | Migración | Estado |
 |---|---|
-| `0100` a `0400` | Aplicadas |
-| `0500_orders` | Aplicada hasta `cart_clear` (línea 841). Falta desde «Cotización del carrito» (línea 842) hasta el final |
-| `0600` a `0900` | Pendientes |
+| `0100` a `0800` | Aplicadas y verificadas con la huella: los 11 tipos de objeto coinciden con `pnpm db:fingerprint 20261028000800`. pg_cron ejecuta la liberación de reservas cada minuto sin errores |
+| `0900_admin_panel` | Pendiente: el conector pide confirmar porque borra y vuelve a crear dos funciones de inventario |
 
 El conector registra cada migración con la fecha de aplicación como versión (por ejemplo
-`20261029114852_base`). Al terminar, el historial (`supabase_migrations.schema_migrations`) debe
+`20261029114852_base`), y `0500` quedó en dos registros (`orders` y `orders_part2`) porque se
+aplicó en dos partes. Al terminar, el historial (`supabase_migrations.schema_migrations`) debe
 quedar con las versiones de los archivos (`20261028000100` … `20261028000900`), una por archivo,
 para que `supabase db push` no intente reaplicarlas. Después se verifica con la huella y con los
 avisos de seguridad y rendimiento de Supabase.
 
 ## Pendiente de verificar en un proyecto Supabase real (D-01)
 
-- Programación con pg_cron (`0800`).
 - Buckets y políticas de Storage para imágenes y documentos (se agregarán en el incremento 1).
 - Flujos de Auth reales (verificación de correo, recuperación y MFA) contra GoTrue.
 - Las consultas del panel y de la app contra PostgREST real (localmente se usa el emulador `tools/local-api`, que cubre solo un subconjunto).

@@ -1,6 +1,6 @@
 # Pruebas
 
-Última actualización: 2026-10-28.
+Última actualización: 2026-10-30.
 
 Estrategia general en [06-plan-de-implementacion.md §5](06-plan-de-implementacion.md#5-estrategia-de-pruebas).
 
@@ -43,6 +43,8 @@ La integración continua ([`.github/workflows/ci.yml`](../.github/workflows/ci.y
 | 2026-10-28 | Panel: TypeScript, ESLint (0 advertencias) y compilación de producción | `typecheck` · `lint` · `build` | Sin errores; todas las páginas se generan por solicitud |
 | 2026-10-28 | Panel: punta a punta con Playwright contra la base local y el emulador `tools/local-api` | `pnpm --filter @repo/admin test:e2e` | **6/6** aprobadas |
 | 2026-10-28 | Panel: revisión visual (1280 y 390 px, claro y oscuro) | capturas automatizadas | Sin errores de consola ni bloqueos de CSP; sin desplazamiento horizontal en móvil |
+| 2026-10-30 | Proyecto Supabase de desarrollo (PostgreSQL 17) frente a la base local (16): huella del esquema de las migraciones `0100`–`0800` | `pnpm db:fingerprint 20261028000800` y la misma consulta en el proyecto | **11/11** tipos idénticos: 350 restricciones, 86 funciones y sus privilegios, 62 tablas y sus privilegios, 136 índices, 112 políticas, 68 disparadores y el contenido de 54 tablas |
+| 2026-10-30 | pg_cron en el proyecto de desarrollo | consulta a `cron.job` y `cron.job_run_details` | Tarea `release-expired-reservations` activa cada minuto; 7 ejecuciones, todas exitosas |
 
 ### Qué cubren
 
@@ -78,8 +80,9 @@ La integración continua ([`.github/workflows/ci.yml`](../.github/workflows/ci.y
 
 ## Pendiente de probar (requiere servicios o equipos que aún no existen)
 
-- Contra un **proyecto Supabase real** (D-01): registro y verificación de correo, recuperación de
-  contraseña, MFA real (TOTP), consultas de la app y del panel contra PostgREST, Storage y pg_cron.
+- Contra el **proyecto Supabase de desarrollo** (D-01): registro y verificación de correo,
+  recuperación de contraseña, MFA real (TOTP), consultas de la app y del panel contra PostgREST y
+  Storage. El esquema y pg_cron ya están verificados (ver el registro).
 - App en **dispositivos iOS y Android** reales (cámara, almacenamiento seguro, tamaños de pantalla,
   conectividad intermitente).
 - **Pago real** en el ambiente de integración del proveedor aprobado (D-03).
