@@ -99,6 +99,12 @@ donde se ejecuta `eas build`:
 - Acceso de red a `api.expo.dev` y `expo.dev`.
 - `EXPO_PUBLIC_SUPABASE_URL` y `EXPO_PUBLIC_SUPABASE_ANON_KEY` del proyecto de desarrollo como
   variables del entorno `preview` de EAS (son públicas: la URL y la clave publicable).
+- `EXPO_OWNER`, `EXPO_SLUG` y `EAS_PROJECT_ID` del proyecto creado en expo.dev, tanto al ejecutar
+  `eas build` como en el entorno `preview` de EAS: `app.config.ts` los lee también en el servidor
+  de compilación.
+
+El perfil `preview` genera un APK (`android.buildType`), porque el formato por omisión (AAB) no se
+puede instalar directamente en un teléfono.
 
 La app exige una versión mínima configurable desde el backend (`app_settings`, clave
 `app.min_supported_version`), para obligar a actualizar cuando un cambio del servidor lo requiera.
