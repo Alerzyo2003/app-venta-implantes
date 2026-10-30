@@ -100,7 +100,7 @@ Estados:
 | SYN-01 | Probado (BD, unitarias) | Pedidos e inventario idempotentes (BD); la app reintenta solo errores de red, con espera exponencial (unitarias). |
 | SYN-02 | En desarrollo | La app informa la falta de conexión y conserva en memoria lo ya consultado; falta la caché persistente en el dispositivo. |
 | QA-01 | En desarrollo | Unitarias, BD y E2E local registradas en [10-pruebas.md](10-pruebas.md). |
-| PUB-01 | Terminado | Variantes, ícono, pantalla de inicio e identificadores configurables; builds EAS pendientes de las cuentas (D-11). |
+| PUB-01 | Terminado | Variantes, ícono, pantalla de inicio e identificadores configurables; primera versión de prueba para Android compilada en EAS; publicación en tiendas pendiente (D-11). |
 
 ## Bitácora de sesiones
 
@@ -110,3 +110,4 @@ Estados:
 | 2026-10-28 | 1 | Monorepo, paquete de dominio, esquema Supabase (9 migraciones) con RLS y RPC, base local de pruebas sin Docker, app móvil Expo, panel Next.js y emulador local para pruebas E2E. |
 | 2026-10-29 | 2 | D-01 aprobada: proyecto `plataforma-implantes-dev` creado (sa-east-1, gratuito). Migraciones `0100`–`0400` y parte de `0500` aplicadas; el resto quedó detenido porque el conector de Supabase pidió confirmaciones que no se alcanzaron a responder y luego quedó conectado a otra cuenta. |
 | 2026-10-30 | 2 | Red del entorno habilitada hacia el proyecto. Huella del esquema (`pnpm db:fingerprint`) para comprobar que el proyecto remoto coincide con las migraciones. Conector reconectado: las 9 migraciones aplicadas e idénticas al repositorio; historial alineado con los archivos; pg_cron funcionando. Avisos de Supabase revisados: nueva migración `1000` que cierra a anónimos 7 funciones que exigen sesión (con prueba). API real verificada como anónimo y panel conectado a Auth real. |
+| 2026-10-30 | 2 | Cuenta Expo de la empresa (`clinica-dignidad`): primera versión de prueba de la app para Android (APK por enlace) compilada en EAS y conectada al proyecto Supabase de desarrollo. |

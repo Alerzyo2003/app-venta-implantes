@@ -88,7 +88,13 @@ cuentas de Apple, Google y Expo de la empresa (decisión D-11).
 eas build --profile development --platform ios   # requiere cuenta Expo y credenciales de Apple
 ```
 
-### Versión de prueba en Android (siguiente paso)
+### Versión de prueba en Android
+
+Primera compilación: 2026-10-30, terminada sin errores. Proyecto EAS `@clinica-dignidad/clinicadignidad`
+(ID `7589da3f-17c9-4fe0-9be6-6eac45ec7f7a`); las variables están en el entorno `preview` de EAS, la
+keystore de Android la administra EAS y el `versionCode` se lleva en el servidor. Para ejecutar
+`eas` en otra máquina, exporta antes `EXPO_OWNER=clinica-dignidad`, `EXPO_SLUG=clinicadignidad` y
+`EAS_PROJECT_ID=7589da3f-17c9-4fe0-9be6-6eac45ec7f7a`.
 
 Se empieza por Android: una versión de prueba que se instala desde un enlace (perfil `preview`,
 distribución interna de EAS), sin cuenta de Google Play. Para compilarla hace falta, en el entorno

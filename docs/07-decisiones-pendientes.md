@@ -14,7 +14,7 @@ Versión 0.1 — 2026-10-28. Cada decisión incluye una **recomendación** y su 
 | D-08 | Proveedor de correo transaccional y dominio | Inc. 1 (producción), Inc. 4 | **Pendiente** |
 | D-09 | Monitoreo de errores | Inc. 5 | **Pendiente** |
 | D-10 | Hosting web y dominios | Inc. 1 (panel desplegado) | **Pendiente** |
-| D-11 | Cuentas de Apple, Google y Expo, e identificadores de la app | Inc. 5, F9 | **En curso** (2026-10-30): primero Android, con versión de prueba por enlace; falta crear la cuenta Expo |
+| D-11 | Cuentas de Apple, Google y Expo, e identificadores de la app | Inc. 5, F9 | **En curso** (2026-10-30): cuenta Expo creada y primera versión de prueba para Android compilada; faltan Google Play, Apple y los identificadores definitivos |
 | D-12 | Política de stock negativo y preventa | — | **Pendiente** (se asume: no se permite) |
 | D-13 | Duración de la reserva de stock durante el pago | Inc. 3 | **Pendiente** (se asume: 30 min) |
 | D-14 | Asesoría legal y regulatoria | Producción | **Pendiente** |

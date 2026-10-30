@@ -50,6 +50,7 @@ La integración continua ([`.github/workflows/ci.yml`](../.github/workflows/ci.y
 | 2026-10-30 | Proyecto de desarrollo: huella del esquema con las 10 migraciones | `pnpm db:fingerprint` y la misma consulta en el proyecto | **11/11** tipos idénticos |
 | 2026-10-30 | API real (PostgREST) como usuario anónimo, con la clave publicable | `curl` a `/rest/v1` | **14/14** según lo esperado: 12 categorías, 16 regiones, 346 comunas, 0 productos, solo la configuración pública, auditoría vacía, búsqueda vacía, sugerencia «Implantes dentales» para «imp», y rechazo (401) de `assign_role`, `place_order`, `apply_payment_result` y de crear una categoría |
 | 2026-10-30 | Panel de producción conectado al proyecto real (Auth real) | `next start` + Playwright | Ingreso con cuenta inexistente: «Correo o contraseña incorrectos.»; las páginas protegidas redirigen al ingreso; cabeceras de seguridad y CSP presentes; sin errores de consola |
+| 2026-10-30 | App Android: compilación de prueba en EAS (perfil `preview`, APK), conectada al proyecto Supabase de desarrollo | `eas build --profile preview --platform android` | Terminada sin errores en el primer intento. Falta instalarla y probarla en un teléfono |
 
 ### Qué cubren
 
