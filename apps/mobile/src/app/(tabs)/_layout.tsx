@@ -12,26 +12,34 @@ export default function TabsLayout() {
   const insets = useSafeAreaInsets();
   return (
     <Tabs
+      // La barra flota sobre el fondo: el área segura inferior se suma como margen, no como relleno.
+      safeAreaInsets={{ bottom: 0 }}
       screenOptions={{
         ...headerOptions,
         headerTitleAlign: 'left',
         headerTitleStyle: { ...headerOptions.headerTitleStyle, fontSize: 22, letterSpacing: -0.4 },
-        tabBarActiveTintColor: colors.primary,
+        tabBarActiveTintColor: colors.highlight,
         tabBarInactiveTintColor: colors.textMuted,
-        // La barra ya suma el área segura inferior como padding; solo se amplía el alto útil
-        // (60 en vez de 49) para que ícono y etiqueta de 11 pt quepan sin recortarse.
+        // Alto útil de 64 (en vez de 49) para que ícono y etiqueta de 11 pt quepan sin recortarse.
         tabBarStyle: {
           backgroundColor: card,
           borderTopWidth: 0,
-          height: 60 + insets.bottom,
-          paddingTop: 6,
+          height: 68,
+          paddingTop: 8,
+          paddingBottom: 10,
+          marginHorizontal: 12,
+          marginBottom: insets.bottom + 8,
+          borderRadius: 24,
           ...shadow.md,
         },
-        tabBarLabelStyle: { fontSize: 11, ...fontStyle('600') },
+        tabBarLabelStyle: { fontSize: 11, lineHeight: 14, ...fontStyle('600') },
         headerRight: () => <CartButton />,
       }}>
       {/* Inicio dibuja su propia cabecera de marca. */}
-      <Tabs.Screen name="index" options={{ title: 'Inicio', headerShown: false, tabBarIcon: ({ color, size }) => <Icon name="home" color={color} size={size} /> }} />
+      <Tabs.Screen
+        name="index"
+        options={{ title: 'Inicio', headerShown: false, tabBarIcon: ({ color, size, focused }) => <Icon name={focused ? 'homeFill' : 'home'} color={color} size={size} /> }}
+      />
       <Tabs.Screen name="categorias" options={{ title: 'Categorías', tabBarIcon: ({ color, size }) => <Icon name="categories" color={color} size={size} /> }} />
       <Tabs.Screen
         name="favoritos"

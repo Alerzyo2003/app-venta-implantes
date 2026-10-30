@@ -3,6 +3,7 @@ import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
+import { ProductImageFallback } from '@/components/catalog/ProductImageFallback';
 import { AppText, Icon } from '@/components/ui';
 import type { SearchResult } from '@/features/catalog/api';
 import { productMediaUrl } from '@/lib/supabase';
@@ -58,7 +59,7 @@ export function ProductCard({ item, compact = false, style }: { item: SearchResu
             accessibilityIgnoresInvertColors
           />
         ) : (
-          <Icon name="image" size={compact ? 34 : 28} color={colors.border} />
+          <ProductImageFallback kind={item.product_kind} compact={!compact} />
         )}
         {item.requires_professional ? (
           <View style={[styles.proTag, { backgroundColor: colors.infoSurface, borderRadius: radius.pill }]}>

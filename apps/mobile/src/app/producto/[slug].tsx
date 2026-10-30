@@ -14,6 +14,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { CartButton } from '@/components/cart/CartButton';
 import { CompatibilityList } from '@/components/catalog/CompatibilityList';
+import { ProductImageFallback } from '@/components/catalog/ProductImageFallback';
 import { VariantSelector } from '@/components/catalog/VariantSelector';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import {
@@ -24,7 +25,6 @@ import {
   Divider,
   EmptyState,
   ErrorState,
-  Icon,
   IconButton,
   ListItem,
   LoadingState,
@@ -41,7 +41,7 @@ import { useAppTheme } from '@/theme/theme';
 
 export default function ProductScreen() {
   const { slug, variante } = useLocalSearchParams<{ slug: string; variante?: string }>();
-  const { colors, radius, spacing, card, shadow } = useAppTheme();
+  const { radius, spacing, card, shadow } = useAppTheme();
   const { user } = useAuth();
   const profile = useProfile();
   const product = useProduct(slug);
@@ -191,10 +191,7 @@ export default function ProductScreen() {
         </ScrollView>
       ) : (
         <View style={[styles.hero, styles.placeholder, { backgroundColor: card, borderRadius: radius.xl, ...shadow.sm }]}>
-          <Icon name="image" size={48} color={colors.border} />
-          <AppText variant="caption" color="textMuted">
-            Sin fotografía publicada
-          </AppText>
+          <ProductImageFallback kind={p.product_kind} />
         </View>
       )}
 

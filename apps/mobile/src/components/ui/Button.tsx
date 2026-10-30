@@ -13,6 +13,8 @@ export interface ButtonProps extends Omit<PressableProps, 'children' | 'style'> 
   size?: 'md' | 'lg' | 'sm';
   loading?: boolean;
   icon?: IconName;
+  /** Ícono antes (por omisión) o después del texto, como una flecha de avance. */
+  iconPosition?: 'left' | 'right';
   fullWidth?: boolean;
 }
 
@@ -23,6 +25,7 @@ export function Button({
   loading = false,
   disabled,
   icon,
+  iconPosition = 'left',
   fullWidth = true,
   accessibilityLabel,
   ...props
@@ -54,7 +57,7 @@ export function Button({
           backgroundColor: palette.bg,
           borderColor: palette.border,
           borderRadius: size === 'sm' ? radius.sm + 2 : radius.md,
-          paddingHorizontal: spacing.xl,
+          paddingHorizontal: spacing.lg,
           alignSelf: fullWidth ? 'stretch' : 'flex-start',
           opacity: isDisabled ? 0.5 : pressed ? 0.85 : 1,
           transform: [{ scale: pressed && !isDisabled ? 0.98 : 1 }],
@@ -65,10 +68,11 @@ export function Button({
         <ActivityIndicator color={palette.fg} />
       ) : (
         <View style={styles.content}>
-          {icon ? <Icon name={icon} size={18} color={palette.fg} /> : null}
+          {icon && iconPosition === 'left' ? <Icon name={icon} size={18} color={palette.fg} /> : null}
           <AppText variant="label" weight="700" style={{ color: palette.fg }}>
             {title}
           </AppText>
+          {icon && iconPosition === 'right' ? <Icon name={icon} size={18} color={palette.fg} /> : null}
         </View>
       )}
     </Pressable>

@@ -54,6 +54,10 @@ const ICONS = {
   eyeOff: { ios: 'eye.slash', android: 'visibility_off', web: 'visibility_off' },
   image: { ios: 'photo', android: 'image', web: 'image' },
   package: { ios: 'shippingbox.fill', android: 'inventory_2', web: 'inventory_2' },
+  shieldCheck: { ios: 'checkmark.shield', android: 'verified_user', web: 'verified_user' },
+  support: { ios: 'headphones', android: 'support_agent', web: 'support_agent' },
+  arrowRight: { ios: 'arrow.right', android: 'arrow_forward', web: 'arrow_forward' },
+  homeFill: { ios: 'house.fill', android: 'home', web: 'home' },
   // Categorías del catálogo (ver features/catalog/category-icons.ts).
   implant: { ios: 'cylinder.split.1x2', android: 'dentistry', web: 'dentistry' },
   layers: { ios: 'square.stack.3d.up', android: 'layers', web: 'layers' },

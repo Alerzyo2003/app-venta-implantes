@@ -18,6 +18,8 @@ export interface BrandPalette {
   onAccent: string;
   /** Variante del acento apta para texto e íconos sobre el fondo. */
   accentText: string;
+  /** Azul vivo: enlaces, pestaña activa y palabras destacadas en títulos. */
+  highlight: string;
   background: string;
   surface: string;
   surfaceAlt: string;
@@ -41,7 +43,16 @@ export interface Brand {
   name: string;
   shortName: string;
   tagline: string;
+  /** Frase corta bajo el nombre en la cabecera de inicio. PROVISIONAL. */
+  slogan: string;
+  /**
+   * Mensajes de confianza de la cabecera de inicio. Son promesas comerciales: el negocio debe
+   * confirmar que se cumplen antes de publicar la app.
+   */
+  valueProps: Array<{ icon: 'shipping' | 'original' | 'support'; text: string }>;
   isProvisional: boolean;
+  /** Degradados (sintaxis CSS, soportada por React Native y la web) para cabecera y promociones. */
+  gradients: Record<ColorScheme, { hero: string; promo: string }>;
   palettes: Record<ColorScheme, BrandPalette>;
   typography: {
     /** undefined = fuente del sistema (San Francisco en iOS, Roboto en Android). */
@@ -68,7 +79,23 @@ export const brand: Brand = {
   name: 'Marca provisional',
   shortName: 'Provisional',
   tagline: 'Implantes dentales e insumos odontológicos',
+  slogan: 'Tu proveedor de confianza',
+  valueProps: [
+    { icon: 'shipping', text: 'Envíos a\ntodo Chile' },
+    { icon: 'original', text: 'Productos\noriginales' },
+    { icon: 'support', text: 'Asesoría\nespecializada' },
+  ],
   isProvisional: true,
+  gradients: {
+    light: {
+      hero: 'linear-gradient(150deg, #2563EB 0%, #1746C2 40%, #0B2A6B 100%)',
+      promo: 'linear-gradient(110deg, #FFFFFF 0%, #EEF4FF 50%, #D9E7FF 100%)',
+    },
+    dark: {
+      hero: 'linear-gradient(150deg, #1D3F8F 0%, #142C66 45%, #0B1B38 100%)',
+      promo: 'linear-gradient(110deg, #16293F 0%, #17305A 100%)',
+    },
+  },
   palettes: {
     light: {
       primary: '#0B2545',
@@ -77,6 +104,7 @@ export const brand: Brand = {
       accent: '#19C3B8',
       onAccent: '#06283D',
       accentText: '#0A6E6A',
+      highlight: '#1F5BE0',
       background: '#FFFFFF',
       surface: '#F4F7FB',
       surfaceAlt: '#E8EFF7',
@@ -101,6 +129,7 @@ export const brand: Brand = {
       accent: '#2DD4CB',
       onAccent: '#04201F',
       accentText: '#5EE0D8',
+      highlight: '#8AB8FF',
       background: '#08131F',
       surface: '#0F1E30',
       surfaceAlt: '#16293F',

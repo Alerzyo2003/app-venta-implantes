@@ -16,6 +16,8 @@ const textPairs: Array<[keyof BrandPalette, keyof BrandPalette]> = [
   ['onAccent', 'accent'],
   ['accentText', 'background'],
   ['accentText', 'surface'],
+  ['highlight', 'background'],
+  ['highlight', 'surface'],
   ['success', 'successSurface'],
   ['warning', 'warningSurface'],
   ['danger', 'dangerSurface'],
