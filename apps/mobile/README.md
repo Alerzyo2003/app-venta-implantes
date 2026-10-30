@@ -88,5 +88,17 @@ cuentas de Apple, Google y Expo de la empresa (decisión D-11).
 eas build --profile development --platform ios   # requiere cuenta Expo y credenciales de Apple
 ```
 
+### Versión de prueba en Android (siguiente paso)
+
+Se empieza por Android: una versión de prueba que se instala desde un enlace (perfil `preview`,
+distribución interna de EAS), sin cuenta de Google Play. Para compilarla hace falta, en el entorno
+donde se ejecuta `eas build`:
+
+- `EXPO_TOKEN`: token de acceso de la cuenta Expo de la empresa, guardado como secreto del entorno
+  (nunca en el repositorio ni en el chat).
+- Acceso de red a `api.expo.dev` y `expo.dev`.
+- `EXPO_PUBLIC_SUPABASE_URL` y `EXPO_PUBLIC_SUPABASE_ANON_KEY` del proyecto de desarrollo como
+  variables del entorno `preview` de EAS (son públicas: la URL y la clave publicable).
+
 La app exige una versión mínima configurable desde el backend (`app_settings`, clave
 `app.min_supported_version`), para obligar a actualizar cuando un cambio del servidor lo requiera.
