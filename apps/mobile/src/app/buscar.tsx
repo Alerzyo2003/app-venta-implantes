@@ -8,7 +8,7 @@ import { ProductCard } from '@/components/catalog/ProductCard';
 import { AppText, Button, Chip, EmptyState, ErrorState, Icon, IconButton, OfflineBanner, Skeleton } from '@/components/ui';
 import { useCatalogSearch, useSuggestions, type SearchFilters } from '@/features/catalog/api';
 import { clearRecentSearches, getRecentSearches, saveRecentSearch } from '@/lib/recent-searches';
-import { useAppTheme } from '@/theme/theme';
+import { fontStyle, useAppTheme } from '@/theme/theme';
 
 const SORTS: { value: NonNullable<SearchFilters['sort']>; label: string }[] = [
   { value: 'relevance', label: 'Relevancia' },
@@ -21,7 +21,7 @@ const SORTS: { value: NonNullable<SearchFilters['sort']>; label: string }[] = [
 const KIND_FILTERS: ProductKind[] = ['implant', 'abutment', 'transfer', 'screw', 'analog', 'healing_abutment', 'biomaterial', 'instrument'];
 
 export default function SearchScreen() {
-  const { colors, radius, spacing, font } = useAppTheme();
+  const { colors, radius, spacing, font, card, shadow } = useAppTheme();
   const params = useLocalSearchParams<{ q?: string }>();
   const [text, setText] = useState(params.q ?? '');
   const [submitted, setSubmitted] = useState(params.q ?? '');
@@ -62,16 +62,17 @@ export default function SearchScreen() {
   return (
     <SafeAreaView edges={['left', 'right']} style={{ flex: 1, backgroundColor: colors.surface }}>
       <OfflineBanner />
-      <View style={{ padding: spacing.lg, gap: spacing.md, backgroundColor: colors.background, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+      <View style={{ paddingHorizontal: spacing.lg, paddingBottom: spacing.md, gap: spacing.md, backgroundColor: colors.surface }}>
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             gap: spacing.sm,
-            borderWidth: 1,
-            borderColor: colors.border,
+            backgroundColor: card,
             borderRadius: radius.md,
-            paddingHorizontal: spacing.md,
+            paddingLeft: spacing.lg,
+            paddingRight: spacing.xs,
+            ...shadow.sm,
           }}>
           <Icon name="search" size={20} color={colors.textMuted} />
           <TextInput
@@ -86,7 +87,7 @@ export default function SearchScreen() {
             autoCorrect={false}
             autoCapitalize="none"
             style={[
-              { flex: 1, minHeight: 48, color: colors.text, fontSize: font.sizes.bodyLarge },
+              { flex: 1, minHeight: 52, color: colors.text, fontSize: font.sizes.bodyLarge, ...fontStyle('500') },
               // En web el foco ya se indica en el contenedor.
               Platform.OS === 'web' ? { outlineWidth: 0 } : null,
             ]}
@@ -114,7 +115,7 @@ export default function SearchScreen() {
       </View>
 
       {suggestions.data && suggestions.data.length > 0 && text !== submitted ? (
-        <View style={{ backgroundColor: colors.background, paddingHorizontal: spacing.lg }}>
+        <View style={{ backgroundColor: card, marginHorizontal: spacing.lg, borderRadius: radius.md, paddingHorizontal: spacing.sm, ...shadow.sm }}>
           {suggestions.data.map((s) => (
             <Button key={`${s.kind}-${s.suggestion}`} title={s.suggestion} variant="ghost" icon="search" onPress={() => submit(s.suggestion)} />
           ))}

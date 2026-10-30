@@ -7,14 +7,14 @@ import { AppText } from './Text';
 export type BadgeTone = 'neutral' | 'success' | 'warning' | 'danger' | 'info' | 'accent';
 
 export function Badge({ label, tone = 'neutral' }: { label: string; tone?: BadgeTone }) {
-  const { colors, radius } = useAppTheme();
+  const { colors, radius, fill } = useAppTheme();
   const map = {
-    neutral: { bg: colors.surfaceAlt, fg: colors.textMuted },
+    neutral: { bg: fill, fg: colors.textMuted },
     success: { bg: colors.successSurface, fg: colors.success },
     warning: { bg: colors.warningSurface, fg: colors.warning },
     danger: { bg: colors.dangerSurface, fg: colors.danger },
     info: { bg: colors.infoSurface, fg: colors.info },
-    accent: { bg: colors.surfaceAlt, fg: colors.accentText },
+    accent: { bg: fill, fg: colors.accentText },
   }[tone];
   return (
     <View
@@ -22,10 +22,10 @@ export function Badge({ label, tone = 'neutral' }: { label: string; tone?: Badge
         backgroundColor: map.bg,
         borderRadius: radius.pill,
         paddingHorizontal: 10,
-        paddingVertical: 3,
+        paddingVertical: 4,
         alignSelf: 'flex-start',
       }}>
-      <AppText variant="caption" weight="600" style={{ color: map.fg }}>
+      <AppText variant="caption" weight="700" style={{ color: map.fg, fontSize: 11, lineHeight: 14 }}>
         {label}
       </AppText>
     </View>

@@ -5,7 +5,7 @@ import { useAuth } from '@/features/auth/AuthProvider';
 import { useCartSummary } from '@/features/cart/api';
 
 /** Acceso al carrito desde las pantallas comerciales (solo con sesión: el carrito vive en el servidor). */
-export function CartButton() {
+export function CartButton({ color }: { color?: string } = {}) {
   const { user } = useAuth();
   const cart = useCartSummary();
   if (!user) return null;
@@ -14,6 +14,7 @@ export function CartButton() {
       icon="cart"
       accessibilityLabel="Abrir carrito"
       badge={cart.data?.item_count}
+      color={color}
       onPress={() => router.push('/carrito')}
     />
   );

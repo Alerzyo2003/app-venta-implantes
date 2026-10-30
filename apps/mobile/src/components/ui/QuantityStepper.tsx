@@ -18,7 +18,7 @@ export function QuantityStepper({
   max?: number;
   disabled?: boolean;
 }) {
-  const { colors, radius } = useAppTheme();
+  const { colors, radius, fill } = useAppTheme();
   const step = (delta: number) => {
     const next = Math.min(max, Math.max(min, value + delta));
     if (next !== value) onChange(next);
@@ -30,7 +30,7 @@ export function QuantityStepper({
       accessibilityValue={{ min, max, now: value }}
       accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
       onAccessibilityAction={(e) => step(e.nativeEvent.actionName === 'increment' ? 1 : -1)}
-      style={[styles.row, { borderColor: colors.border, borderRadius: radius.md, opacity: disabled ? 0.5 : 1 }]}>
+      style={[styles.row, { backgroundColor: fill, borderRadius: radius.md, opacity: disabled ? 0.5 : 1 }]}>
       <Pressable
         accessibilityLabel="Disminuir cantidad"
         disabled={disabled || value <= min}
@@ -55,7 +55,7 @@ export function QuantityStepper({
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, alignSelf: 'flex-start' },
-  button: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+  row: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start' },
+  button: { width: 44, height: 52, alignItems: 'center', justifyContent: 'center' },
   value: { minWidth: 32, textAlign: 'center' },
 });

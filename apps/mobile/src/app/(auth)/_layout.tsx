@@ -1,15 +1,15 @@
 import { router, Stack } from 'expo-router';
 
 import { IconButton } from '@/components/ui';
-import { useAppTheme } from '@/theme/theme';
+import { useAppTheme, useHeaderOptions } from '@/theme/theme';
 
 export default function AuthLayout() {
   const { colors } = useAppTheme();
+  const headerOptions = useHeaderOptions();
   return (
     <Stack
       screenOptions={{
-        headerTintColor: colors.primary,
-        headerTitleStyle: { color: colors.text },
+        ...headerOptions,
         contentStyle: { backgroundColor: colors.surface },
         headerRight: () => (
           <IconButton

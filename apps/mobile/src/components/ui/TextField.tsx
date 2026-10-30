@@ -1,7 +1,7 @@
 import { forwardRef, useState, type ComponentRef } from 'react';
 import { Pressable, StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
 
-import { useAppTheme } from '@/theme/theme';
+import { fontStyle, useAppTheme } from '@/theme/theme';
 
 import { Icon } from './Icon';
 import { AppText } from './Text';
@@ -18,22 +18,22 @@ export const TextField = forwardRef<ComponentRef<typeof TextInput>, TextFieldPro
   { label, error, helper, password = false, style, editable = true, ...props },
   ref,
 ) {
-  const { colors, radius, spacing, font } = useAppTheme();
+  const { colors, radius, spacing, font, fill, scheme } = useAppTheme();
   const [hidden, setHidden] = useState(password);
   const [focused, setFocused] = useState(false);
 
   return (
     <View style={{ gap: spacing.xs }}>
-      <AppText variant="label" color="text">
+      <AppText variant="caption" weight="600" color="textMuted">
         {label}
       </AppText>
       <View
         style={[
           styles.field,
           {
-            borderColor: error ? colors.danger : focused ? colors.primary : colors.border,
+            borderColor: error ? colors.danger : focused ? colors.primary : scheme === 'dark' ? colors.border : fill,
             borderRadius: radius.md,
-            backgroundColor: editable ? colors.background : colors.surface,
+            backgroundColor: !editable ? colors.surface : fill,
           },
         ]}>
         <TextInput
@@ -53,7 +53,7 @@ export const TextField = forwardRef<ComponentRef<typeof TextInput>, TextFieldPro
           }}
           style={[
             styles.input,
-            { color: colors.text, fontSize: font.sizes.bodyLarge, fontFamily: font.fontFamily, paddingHorizontal: spacing.md },
+            { color: colors.text, fontSize: font.sizes.bodyLarge, ...fontStyle('500'), paddingHorizontal: spacing.lg },
             style,
           ]}
           {...props}
@@ -83,7 +83,7 @@ export const TextField = forwardRef<ComponentRef<typeof TextInput>, TextFieldPro
 });
 
 const styles = StyleSheet.create({
-  field: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, minHeight: 48 },
-  input: { flex: 1, minHeight: 48 },
-  toggle: { paddingHorizontal: 12, height: 48, justifyContent: 'center' },
+  field: { flexDirection: 'row', alignItems: 'center', borderWidth: 1.5, minHeight: 54 },
+  input: { flex: 1, minHeight: 54 },
+  toggle: { paddingHorizontal: 14, height: 54, justifyContent: 'center' },
 });

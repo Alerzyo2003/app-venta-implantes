@@ -27,18 +27,18 @@ export function Button({
   accessibilityLabel,
   ...props
 }: ButtonProps) {
-  const { colors, radius, spacing } = useAppTheme();
+  const { colors, radius, spacing, card } = useAppTheme();
   const isDisabled = disabled || loading;
 
   const palette = {
     primary: { bg: colors.primary, fg: colors.onPrimary, border: colors.primary },
     secondary: { bg: colors.accent, fg: colors.onAccent, border: colors.accent },
-    outline: { bg: 'transparent', fg: colors.primary, border: colors.border },
+    outline: { bg: card, fg: colors.primary, border: colors.border },
     ghost: { bg: 'transparent', fg: colors.primary, border: 'transparent' },
     danger: { bg: colors.danger, fg: colors.textInverse, border: colors.danger },
   }[variant];
 
-  const height = size === 'lg' ? 54 : size === 'sm' ? 40 : 48;
+  const height = size === 'lg' ? 56 : size === 'sm' ? 40 : 52;
 
   return (
     <Pressable
@@ -53,8 +53,8 @@ export function Button({
           minHeight: height,
           backgroundColor: palette.bg,
           borderColor: palette.border,
-          borderRadius: radius.md,
-          paddingHorizontal: spacing.lg,
+          borderRadius: size === 'sm' ? radius.sm + 2 : radius.md,
+          paddingHorizontal: spacing.xl,
           alignSelf: fullWidth ? 'stretch' : 'flex-start',
           opacity: isDisabled ? 0.5 : pressed ? 0.85 : 1,
           transform: [{ scale: pressed && !isDisabled ? 0.98 : 1 }],
@@ -66,7 +66,7 @@ export function Button({
       ) : (
         <View style={styles.content}>
           {icon ? <Icon name={icon} size={18} color={palette.fg} /> : null}
-          <AppText variant="label" style={{ color: palette.fg }}>
+          <AppText variant="label" weight="700" style={{ color: palette.fg }}>
             {title}
           </AppText>
         </View>
@@ -113,12 +113,12 @@ export function IconButton({
 
 const styles = StyleSheet.create({
   base: { borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
-  content: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  content: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   iconButton: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
   badge: {
     position: 'absolute',
-    top: 4,
-    right: 2,
+    top: 3,
+    right: 1,
     minWidth: 18,
     height: 18,
     borderRadius: 9,

@@ -1,7 +1,7 @@
 import type { BrandPalette } from '@repo/brand';
 import { Text as RNText, type TextProps as RNTextProps, type TextStyle } from 'react-native';
 
-import { useAppTheme } from '@/theme/theme';
+import { fontStyle, useAppTheme } from '@/theme/theme';
 
 export type TextVariant = 'display' | 'headline' | 'title' | 'bodyLarge' | 'body' | 'caption' | 'label';
 
@@ -24,7 +24,9 @@ export function AppText({ variant = 'body', color = 'text', weight, align, style
     label: font.sizes.body,
   }[variant];
   const defaultWeight: TextStyle['fontWeight'] =
-    variant === 'display' || variant === 'headline' ? '700' : variant === 'title' || variant === 'label' ? '600' : '400';
+    variant === 'display' ? '800' : variant === 'headline' || variant === 'title' ? '700' : variant === 'label' ? '600' : '400';
+  // Los títulos grandes se ven más modernos con el interletrado levemente reducido.
+  const letterSpacing = variant === 'display' ? -0.8 : variant === 'headline' ? -0.5 : variant === 'title' ? -0.2 : 0;
   return (
     <RNText
       accessibilityRole={variant === 'display' || variant === 'headline' || variant === 'title' ? 'header' : undefined}
@@ -33,9 +35,9 @@ export function AppText({ variant = 'body', color = 'text', weight, align, style
         {
           color: colors[color],
           fontSize: size,
-          lineHeight: Math.round(size * 1.35),
-          fontWeight: weight ?? defaultWeight,
-          fontFamily: font.fontFamily,
+          lineHeight: Math.round(size * (variant === 'display' || variant === 'headline' ? 1.2 : 1.4)),
+          letterSpacing,
+          ...fontStyle(weight ?? defaultWeight),
           textAlign: align,
         },
         style,

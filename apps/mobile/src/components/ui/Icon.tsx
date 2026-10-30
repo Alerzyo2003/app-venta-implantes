@@ -54,6 +54,19 @@ const ICONS = {
   eyeOff: { ios: 'eye.slash', android: 'visibility_off', web: 'visibility_off' },
   image: { ios: 'photo', android: 'image', web: 'image' },
   package: { ios: 'shippingbox.fill', android: 'inventory_2', web: 'inventory_2' },
+  // Categorías del catálogo (ver features/catalog/category-icons.ts).
+  implant: { ios: 'cylinder.split.1x2', android: 'dentistry', web: 'dentistry' },
+  layers: { ios: 'square.stack.3d.up', android: 'layers', web: 'layers' },
+  pillar: { ios: 'cylinder', android: 'view_agenda', web: 'view_agenda' },
+  transfer: { ios: 'arrow.left.arrow.right', android: 'swap_horiz', web: 'swap_horiz' },
+  screw: { ios: 'wrench.and.screwdriver', android: 'build', web: 'build' },
+  cube: { ios: 'cube', android: 'deployed_code', web: 'deployed_code' },
+  drop: { ios: 'drop', android: 'water_drop', web: 'water_drop' },
+  scissors: { ios: 'scissors', android: 'content_cut', web: 'content_cut' },
+  medicalKit: { ios: 'cross.case', android: 'medical_services', web: 'medical_services' },
+  smile: { ios: 'face.smiling', android: 'sentiment_satisfied', web: 'sentiment_satisfied' },
+  bag: { ios: 'bag', android: 'shopping_bag', web: 'shopping_bag' },
+  tag: { ios: 'tag', android: 'sell', web: 'sell' },
 } as const satisfies Record<string, SymbolName>;
 
 export type IconName = keyof typeof ICONS;

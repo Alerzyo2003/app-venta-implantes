@@ -14,13 +14,12 @@ export function Card({
   style?: StyleProp<ViewStyle>;
   accessibilityLabel?: string;
 }) {
-  const { colors, radius, spacing } = useAppTheme();
+  const { radius, spacing, card, shadow } = useAppTheme();
   const base: ViewStyle = {
-    backgroundColor: colors.background,
-    borderColor: colors.border,
-    borderWidth: 1,
+    backgroundColor: card,
     borderRadius: radius.lg,
     padding: spacing.lg,
+    ...shadow.sm,
   };
   if (!onPress) return <View style={[base, style]}>{children}</View>;
   return (
@@ -28,7 +27,7 @@ export function Card({
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       onPress={onPress}
-      style={({ pressed }) => [base, { opacity: pressed ? 0.9 : 1 }, style]}>
+      style={({ pressed }) => [base, { opacity: pressed ? 0.9 : 1, transform: [{ scale: pressed ? 0.99 : 1 }] }, style]}>
       {children}
     </Pressable>
   );

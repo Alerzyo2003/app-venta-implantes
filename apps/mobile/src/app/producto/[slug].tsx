@@ -41,7 +41,7 @@ import { useAppTheme } from '@/theme/theme';
 
 export default function ProductScreen() {
   const { slug, variante } = useLocalSearchParams<{ slug: string; variante?: string }>();
-  const { colors, radius, spacing } = useAppTheme();
+  const { colors, radius, spacing, card, shadow } = useAppTheme();
   const { user } = useAuth();
   const profile = useProfile();
   const product = useProduct(slug);
@@ -177,9 +177,9 @@ export default function ProductScreen() {
       />
 
       {p.media.length > 0 ? (
-        <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} style={{ borderRadius: radius.lg }}>
+        <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} style={{ borderRadius: radius.xl, ...shadow.sm }}>
           {p.media.map((m) => (
-            <View key={m.storage_path} style={[styles.hero, { backgroundColor: colors.background, borderRadius: radius.lg }]}>
+            <View key={m.storage_path} style={[styles.hero, { backgroundColor: card, borderRadius: radius.xl }]}>
               <Image
                 source={{ uri: productMediaUrl(m.storage_path) }}
                 style={StyleSheet.absoluteFill}
@@ -190,8 +190,8 @@ export default function ProductScreen() {
           ))}
         </ScrollView>
       ) : (
-        <View style={[styles.hero, styles.placeholder, { backgroundColor: colors.background, borderRadius: radius.lg }]}>
-          <Icon name="image" size={40} color={colors.textMuted} />
+        <View style={[styles.hero, styles.placeholder, { backgroundColor: card, borderRadius: radius.xl, ...shadow.sm }]}>
+          <Icon name="image" size={48} color={colors.border} />
           <AppText variant="caption" color="textMuted">
             Sin fotografía publicada
           </AppText>
@@ -199,7 +199,7 @@ export default function ProductScreen() {
       )}
 
       <View style={{ gap: spacing.sm }}>
-        <AppText variant="caption" color="accentText" weight="600">
+        <AppText variant="caption" color="accentText" weight="700" style={{ textTransform: 'uppercase', letterSpacing: 0.5 }}>
           {kind.label}
           {p.brand ? ` · ${p.brand.name}` : ''}
         </AppText>
@@ -244,10 +244,15 @@ export default function ProductScreen() {
         <Card>
           <View style={{ gap: spacing.sm }}>
             <AppText variant="title">Especificaciones</AppText>
-            {specs.map(([label, value]) => (
-              <View key={label} style={{ flexDirection: 'row', justifyContent: 'space-between', gap: spacing.md }}>
-                <AppText color="textMuted">{label}</AppText>
-                <AppText style={{ flexShrink: 1, textAlign: 'right' }}>{value}</AppText>
+            {specs.map(([label, value], i) => (
+              <View key={label} style={{ gap: spacing.sm }}>
+                {i > 0 ? <Divider /> : null}
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: spacing.md }}>
+                  <AppText color="textMuted">{label}</AppText>
+                  <AppText weight="600" style={{ flexShrink: 1, textAlign: 'right' }}>
+                    {value}
+                  </AppText>
+                </View>
               </View>
             ))}
           </View>

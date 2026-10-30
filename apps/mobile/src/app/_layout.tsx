@@ -1,3 +1,11 @@
+import {
+  PlusJakartaSans_400Regular,
+  PlusJakartaSans_500Medium,
+  PlusJakartaSans_600SemiBold,
+  PlusJakartaSans_700Bold,
+  PlusJakartaSans_800ExtraBold,
+  useFonts,
+} from '@expo-google-fonts/plus-jakarta-sans';
 import { QueryClientProvider } from '@tanstack/react-query';
 import Constants from 'expo-constants';
 import { Stack, ThemeProvider } from 'expo-router';
@@ -13,7 +21,7 @@ import { AuthProvider, useAuth } from '@/features/auth/AuthProvider';
 import { usePublicSettings } from '@/features/settings/api';
 import { queryClient } from '@/lib/query-client';
 import { isBelowMinimum } from '@/lib/version';
-import { AppThemeProvider, useAppTheme, useNavigationTheme } from '@/theme/theme';
+import { AppThemeProvider, useAppTheme, useHeaderOptions, useNavigationTheme } from '@/theme/theme';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
@@ -33,11 +41,23 @@ function RootNavigator() {
   const { initializing } = useAuth();
   const { colors, scheme } = useAppTheme();
   const navigationTheme = useNavigationTheme();
+  const headerOptions = useHeaderOptions();
   const settings = usePublicSettings();
+  // Si la fuente no carga (sin red en web, archivo dañado), la app sigue con la del sistema.
+  const [fontsLoaded, fontError] = useFonts({
+    PlusJakartaSans_400Regular,
+    PlusJakartaSans_500Medium,
+    PlusJakartaSans_600SemiBold,
+    PlusJakartaSans_700Bold,
+    PlusJakartaSans_800ExtraBold,
+  });
+  const fontsReady = fontsLoaded || !!fontError;
 
   useEffect(() => {
-    if (!initializing) SplashScreen.hideAsync().catch(() => undefined);
-  }, [initializing]);
+    if (!initializing && fontsReady) SplashScreen.hideAsync().catch(() => undefined);
+  }, [initializing, fontsReady]);
+
+  if (!fontsReady) return null;
 
   if (!isBackendConfigured) return <ConfigMissing />;
 
@@ -60,8 +80,7 @@ function RootNavigator() {
       <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
-          headerTintColor: colors.primary,
-          headerTitleStyle: { color: colors.text },
+          ...headerOptions,
           headerBackTitle: 'Atrás',
           contentStyle: { backgroundColor: colors.surface },
         }}>

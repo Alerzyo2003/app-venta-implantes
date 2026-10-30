@@ -31,7 +31,7 @@ export function Screen({
   contentStyle,
   background = 'surface',
 }: ScreenProps) {
-  const { colors, spacing } = useAppTheme();
+  const { colors, spacing, card, radius, shadow } = useAppTheme();
   const padding = padded ? spacing.lg : 0;
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors[background] }} edges={edges}>
@@ -55,9 +55,10 @@ export function Screen({
           <SafeAreaView
             edges={['bottom']}
             style={{
-              backgroundColor: colors.background,
-              borderTopWidth: 1,
-              borderTopColor: colors.border,
+              backgroundColor: card,
+              borderTopLeftRadius: radius.lg,
+              borderTopRightRadius: radius.lg,
+              ...shadow.md,
               paddingHorizontal: spacing.lg,
               paddingTop: spacing.md,
               paddingBottom: spacing.md,

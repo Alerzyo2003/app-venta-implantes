@@ -4,11 +4,13 @@ import { Link, router } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
-import { AppText, Button, Card, Screen, TextField } from '@/components/ui';
+import { AppText, Button, Card, Icon, Screen, TextField } from '@/components/ui';
 import { useSignIn } from '@/features/auth/api';
+import { useAppTheme } from '@/theme/theme';
 
 export default function SignInScreen() {
   const signIn = useSignIn();
+  const { colors, radius, spacing } = useAppTheme();
   const { control, handleSubmit, formState } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
@@ -26,6 +28,13 @@ export default function SignInScreen() {
 
   return (
     <Screen>
+      <View style={{ gap: spacing.sm, paddingTop: spacing.sm }}>
+        <View style={{ width: 56, height: 56, borderRadius: radius.lg, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' }}>
+          <Icon name="lock" size={26} color={colors.onPrimary} />
+        </View>
+        <AppText variant="headline">Hola de nuevo</AppText>
+        <AppText color="textMuted">Ingresa con tu correo para ver precios, comprar y seguir tus pedidos.</AppText>
+      </View>
       <Card>
         <View style={{ gap: 16 }}>
           <Controller

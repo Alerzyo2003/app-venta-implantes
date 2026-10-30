@@ -23,12 +23,10 @@ export function Chip({
       onPress={onPress}
       disabled={disabled}
       style={({ pressed }) => ({
-        borderWidth: 1,
-        borderColor: selected ? colors.primary : colors.border,
-        backgroundColor: selected ? colors.primary : colors.background,
+        backgroundColor: selected ? colors.primary : colors.surfaceAlt,
         borderRadius: radius.pill,
-        paddingHorizontal: spacing.md,
-        minHeight: 36,
+        paddingHorizontal: spacing.lg,
+        minHeight: 38,
         justifyContent: 'center',
         opacity: disabled ? 0.4 : pressed ? 0.8 : 1,
       })}>

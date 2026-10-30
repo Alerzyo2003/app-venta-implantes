@@ -20,12 +20,24 @@ export function ListItem({
   right?: React.ReactNode;
   destructive?: boolean;
 }) {
-  const { colors, spacing } = useAppTheme();
+  const { colors, spacing, radius, fill } = useAppTheme();
   const content = (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md, minHeight: 52, paddingVertical: spacing.sm }}>
-      {icon ? <Icon name={icon} size={22} color={destructive ? colors.danger : colors.primary} /> : null}
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md, minHeight: 56, paddingVertical: spacing.sm }}>
+      {icon ? (
+        <View
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: radius.sm + 4,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: destructive ? colors.dangerSurface : fill,
+          }}>
+          <Icon name={icon} size={20} color={destructive ? colors.danger : colors.primary} />
+        </View>
+      ) : null}
       <View style={{ flex: 1, gap: 2 }}>
-        <AppText variant="bodyLarge" color={destructive ? 'danger' : 'text'}>
+        <AppText variant="body" weight="600" color={destructive ? 'danger' : 'text'}>
           {title}
         </AppText>
         {subtitle ? (
@@ -62,6 +74,6 @@ export function SectionHeader({ title, action, onAction }: { title: string; acti
 }
 
 export function Divider() {
-  const { colors } = useAppTheme();
-  return <View style={{ height: 1, backgroundColor: colors.border }} />;
+  const { fill } = useAppTheme();
+  return <View style={{ height: 1, backgroundColor: fill }} />;
 }

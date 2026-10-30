@@ -25,8 +25,8 @@ export function EmptyState({
   const { colors, spacing } = useAppTheme();
   return (
     <View accessibilityRole="summary" style={{ alignItems: 'center', gap: spacing.md, paddingVertical: spacing.xxl, paddingHorizontal: spacing.lg }}>
-      <View style={{ backgroundColor: colors.surfaceAlt, borderRadius: 999, padding: spacing.lg }}>
-        <Icon name={icon} size={32} color={colors.primary} />
+      <View style={{ backgroundColor: colors.surfaceAlt, borderRadius: 999, padding: spacing.xl }}>
+        <Icon name={icon} size={34} color={colors.primary} />
       </View>
       <AppText variant="title" align="center">
         {title}

@@ -3,6 +3,7 @@ import { View } from 'react-native';
 
 import { Card, Divider, EmptyState, ErrorState, ListItem, LoadingState, Screen } from '@/components/ui';
 import { useCategories, type Category } from '@/features/catalog/api';
+import { categoryIcon } from '@/features/catalog/category-icons';
 
 export default function CategoriesScreen() {
   const categories = useCategories();
@@ -26,13 +27,13 @@ export default function CategoriesScreen() {
       {top.length === 0 ? (
         <EmptyState icon="categories" title="Sin categorías" message="Aún no hay categorías publicadas." />
       ) : (
-        <Card>
+        <Card style={{ paddingVertical: 8 }}>
           {top.map((c, i) => (
             <View key={c.id}>
               {i > 0 ? <Divider /> : null}
-              <ListItem title={c.name} onPress={() => open(c)} />
+              <ListItem icon={categoryIcon(c.slug)} title={c.name} onPress={() => open(c)} />
               {childrenOf(c.id).map((sub) => (
-                <View key={sub.id} style={{ paddingLeft: 16 }}>
+                <View key={sub.id} style={{ paddingLeft: 52 }}>
                   <ListItem title={sub.name} subtitle="Subcategoría" onPress={() => open(sub)} />
                 </View>
               ))}

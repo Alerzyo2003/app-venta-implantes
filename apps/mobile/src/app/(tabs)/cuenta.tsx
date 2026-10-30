@@ -4,10 +4,11 @@ import { router } from 'expo-router';
 import { View } from 'react-native';
 
 import { WhatsAppButton } from '@/components/WhatsAppButton';
-import { AppText, Badge, Button, Card, Divider, ListItem, Screen } from '@/components/ui';
+import { AppText, Badge, Button, Card, Divider, Icon, ListItem, Screen } from '@/components/ui';
 import { useProfile } from '@/features/account/api';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { useSignOut } from '@/features/auth/api';
+import { useAppTheme } from '@/theme/theme';
 
 const PRO_STATUS = {
   not_requested: { label: 'Sin verificación profesional', tone: 'neutral' },
@@ -20,16 +21,22 @@ export default function AccountScreen() {
   const { user } = useAuth();
   const profile = useProfile();
   const signOut = useSignOut();
+  const { colors, radius, spacing, fill } = useAppTheme();
 
   if (!user) {
     return (
       <Screen>
         <Card>
-          <View style={{ gap: 12 }}>
+          <View style={{ gap: spacing.md }}>
+            <View style={{ width: 56, height: 56, borderRadius: radius.lg, backgroundColor: fill, alignItems: 'center', justifyContent: 'center' }}>
+              <Icon name="account" size={30} color={colors.primary} />
+            </View>
             <AppText variant="headline">Te damos la bienvenida a {brand.name}</AppText>
             <AppText color="textMuted">Inicia sesión o crea tu cuenta para comprar, guardar favoritos y seguir tus pedidos.</AppText>
-            <Button title="Iniciar sesión" onPress={() => router.push('/iniciar-sesion')} />
-            <Button title="Crear cuenta" variant="outline" onPress={() => router.push('/registro')} />
+            <View style={{ gap: spacing.sm, marginTop: spacing.xs }}>
+              <Button title="Iniciar sesión" onPress={() => router.push('/iniciar-sesion')} />
+              <Button title="Crear cuenta" variant="outline" onPress={() => router.push('/registro')} />
+            </View>
           </View>
         </Card>
         <WhatsAppButton message={whatsappMessages.support()} />
@@ -38,19 +45,41 @@ export default function AccountScreen() {
   }
 
   const status = profile.data ? PRO_STATUS[profile.data.professional_status] : null;
+  const displayName = profile.data?.full_name || user.email || '';
+  const initials =
+    displayName
+      .split(/[\s@.]+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((w) => w.charAt(0).toUpperCase())
+      .join('') || '?';
 
   return (
     <Screen refreshing={profile.isRefetching} onRefresh={() => profile.refetch()}>
       <Card>
-        <View style={{ gap: 6 }}>
-          <AppText variant="title">{profile.data?.full_name || user.email}</AppText>
-          <AppText color="textMuted">{user.email}</AppText>
-          {profile.data ? <AppText variant="caption">{ACCOUNT_TYPE_LABELS[profile.data.account_type]}</AppText> : null}
-          {status ? <Badge label={status.label} tone={status.tone} /> : null}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.lg }}>
+          <View
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' }}>
+            <AppText variant="title" style={{ color: colors.onPrimary }}>
+              {initials}
+            </AppText>
+          </View>
+          <View style={{ flex: 1, gap: 4 }}>
+            <AppText variant="title" numberOfLines={1}>
+              {displayName}
+            </AppText>
+            <AppText variant="caption" color="textMuted" numberOfLines={1}>
+              {user.email}
+              {profile.data ? ` · ${ACCOUNT_TYPE_LABELS[profile.data.account_type]}` : ''}
+            </AppText>
+            {status ? <Badge label={status.label} tone={status.tone} /> : null}
+          </View>
         </View>
       </Card>
 
-      <Card>
+      <Card style={{ paddingVertical: spacing.sm }}>
         <ListItem icon="account" title="Datos personales" onPress={() => router.push('/cuenta/perfil')} />
         <Divider />
         <ListItem icon="location" title="Direcciones de despacho" onPress={() => router.push('/cuenta/direcciones')} />

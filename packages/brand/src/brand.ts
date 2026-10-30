@@ -46,6 +46,11 @@ export interface Brand {
   typography: {
     /** undefined = fuente del sistema (San Francisco en iOS, Roboto en Android). */
     fontFamily: string | undefined;
+    /**
+     * Familias por peso de la fuente propia (las apps nativas no sintetizan pesos de fuentes
+     * cargadas). undefined = fuente del sistema con fontWeight.
+     */
+    fonts: { regular: string; medium: string; semibold: string; bold: string; extrabold: string } | undefined;
     sizes: {
       caption: number;
       body: number;
@@ -55,7 +60,7 @@ export interface Brand {
       display: number;
     };
   };
-  radius: { sm: number; md: number; lg: number; pill: number };
+  radius: { sm: number; md: number; lg: number; xl: number; pill: number };
   spacing: { xs: number; sm: number; md: number; lg: number; xl: number; xxl: number };
 }
 
@@ -115,9 +120,17 @@ export const brand: Brand = {
     },
   },
   typography: {
-    fontFamily: undefined,
-    sizes: { caption: 12, body: 15, bodyLarge: 17, title: 20, headline: 24, display: 30 },
+    // Plus Jakarta Sans (licencia OFL), cargada por la app con @expo-google-fonts.
+    fontFamily: 'PlusJakartaSans_400Regular',
+    fonts: {
+      regular: 'PlusJakartaSans_400Regular',
+      medium: 'PlusJakartaSans_500Medium',
+      semibold: 'PlusJakartaSans_600SemiBold',
+      bold: 'PlusJakartaSans_700Bold',
+      extrabold: 'PlusJakartaSans_800ExtraBold',
+    },
+    sizes: { caption: 12, body: 15, bodyLarge: 17, title: 19, headline: 26, display: 32 },
   },
-  radius: { sm: 6, md: 10, lg: 16, pill: 999 },
+  radius: { sm: 8, md: 14, lg: 20, xl: 28, pill: 999 },
   spacing: { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32 },
 };
